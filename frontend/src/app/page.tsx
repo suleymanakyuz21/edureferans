@@ -4,6 +4,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Play, Users, Award, BookOpen, Star, TrendingUp, Zap, ShieldCheck } from 'lucide-react';
 import Link from 'next/link';
+import { cn } from '@/lib/utils';
 
 export default function Home() {
   const stats = [

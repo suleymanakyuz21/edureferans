@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { Youtube, Github, Globe, MessageSquare, Mail } from 'lucide-react';
+import { Globe, Mail, MessageSquare, Monitor, Info } from 'lucide-react';
 
 const Footer = () => {
   return (
@@ -15,7 +15,7 @@ const Footer = () => {
               Türkiye'nin en yenilikçi eğitim ve referans platformu. Öğrenirken kazan, kazandırırken büyü.
             </p>
             <div className="flex gap-4">
-              {[Youtube, Github, Globe, MessageSquare].map((Icon, i) => (
+              {[Globe, MessageSquare, Monitor, Info].map((Icon, i) => (
                 <a key={i} href="#" className="w-10 h-10 flex items-center justify-center rounded-full border border-[var(--border-color)] text-[var(--text-secondary)] hover:text-white hover:border-indigo-500 transition-all">
                   <Icon size={18} />
                 </a>

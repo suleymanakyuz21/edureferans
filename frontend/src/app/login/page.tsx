@@ -88,7 +88,7 @@ export default function Login() {
           </div>
 
           <div className="flex justify-end">
-            <Link href="/forgot-password" size="sm" className="text-xs text-[var(--text-secondary)] hover:text-indigo-500 transition-colors">
+            <Link href="/forgot-password" className="text-xs text-[var(--text-secondary)] hover:text-indigo-500 transition-colors">
               Şifremi Unuttum
             </Link>
           </div>
