@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | EduPlatform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            overflow: hidden; /* App-like feel, no global scroll */
+        }
+
+        .dashboard-layout {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            padding: 2rem 1.5rem;
+            z-index: 10;
+        }
+
+        .sidebar-logo {
+            font-size: 1.75rem;
+            font-weight: 800;
+            background: var(--gradient-accent);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 3rem;
+            padding-left: 1rem;
+        }
+
+        .sidebar-nav {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            flex: 1;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: 12px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--text-primary);
+        }
+
+        .nav-item.active {
+            background: var(--accent-glow);
+            color: #818cf8;
+            box-shadow: inset 4px 0 0 #818cf8;
+        }
+
+        .nav-item .icon { font-size: 1.25rem; }
+
+        .sidebar-footer {
+            margin-top: auto;
+            border-top: 1px solid var(--border-color);
+            padding-top: 1.5rem;
+        }
+
+        .logout-btn {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: rgba(239, 68, 68, 0.2);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        /* Header */
+        .dashboard-header {
+            padding: 2rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 5;
+        }
+
+        .header-greeting h1 {
+            font-size: 1.5rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            background: var(--gradient-accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: white;
+            box-shadow: 0 4px 10px var(--accent-glow);
+        }
+
+        /* Content Area */
+        .tab-content-area {
+            padding: 3rem;
+            flex: 1;
+        }
+
+        .tab-pane {
+            display: none;
+            animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .tab-pane.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .bg-success-light { background: rgba(16, 185, 129, 0.15); color: #10b981; }
+        .bg-accent-light { background: rgba(99, 102, 241, 0.15); color: #818cf8; }
+        .bg-purple-light { background: rgba(168, 85, 247, 0.15); color: #c084fc; }
+
+        .stat-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-value {
+            font-size: 1.75rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .stat-sub {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+
+        /* Upsell Banner */
+        .premium-upsell {
+            margin: 2rem 3rem 0;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(168, 85, 247, 0.15) 100%);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 20px;
+            padding: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .premium-upsell::before {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 60%);
+            animation: rotate 20s linear infinite; pointer-events: none;
+        }
+
+        @keyframes rotate { 100% { transform: rotate(360deg); } }
+
+        .upsell-content h2 { color: #818cf8; font-size: 1.5rem; margin-bottom: 0.5rem; }
+        .upsell-content p { color: var(--text-secondary); max-width: 600px; }
+
+        .upsell-btn {
+            background: var(--gradient-accent);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px var(--accent-glow);
+            white-space: nowrap;
+        }
+
+        .upsell-btn:hover { transform: translateY(-2px) scale(1.05); }
+
+        /* Referral Box */
+        .referral-box {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 800px;
+        }
+
+        .copy-input-group {
+            display: flex;
+            background: rgba(0,0,0,0.2);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: border-color 0.3s;
+        }
+
+        .copy-input-group:focus-within { border-color: #6366f1; }
+
+        .copy-input-group input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            padding: 1rem 1.25rem;
+            font-family: monospace;
+            font-size: 1rem;
+        }
+
+        .copy-input-group input:focus { outline: none; }
+
+        .copy-btn {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: none;
+            border-left: 1px solid var(--border-color);
+            padding: 0 1.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .copy-btn:hover { background: var(--text-primary); color: var(--bg-primary); }
+
+        .premium-lock {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+        .lock-icon { font-size: 3rem; margin-bottom: 1rem; display: block; }
+        .premium-lock h3 { color: #818cf8; margin-bottom: 0.5rem; }
+
+        /* Courses Grid */
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .course-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+
+        .course-card:hover { transform: translateY(-5px); border-color: #6366f1; }
+        .course-thumbnail { height: 160px; background: rgba(99, 102, 241, 0.1); display: flex; align-items: center; justify-content: center; font-size: 3rem; }
+        .course-info { padding: 1.5rem; }
+        .course-info h3 { margin-bottom: 0.5rem; font-size: 1.1rem; }
+        .course-info p { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.5rem; }
+        .course-play-btn {
+            display: block; width: 100%; text-align: center;
+            background: rgba(99, 102, 241, 0.1); color: #818cf8;
+            padding: 0.75rem; border-radius: 10px; text-decoration: none; font-weight: 600; transition: all 0.3s;
+        }
+        .course-play-btn:hover { background: #6366f1; color: white; }
+
+        /* Modern Table */
+        .table-container {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .modern-table { width: 100%; border-collapse: collapse; }
+        .modern-table th, .modern-table td { padding: 1.25rem 1.5rem; text-align: left; }
+        .modern-table th { background: rgba(255,255,255,0.02); color: var(--text-secondary); font-weight: 500; border-bottom: 1px solid var(--border-color); }
+        .modern-table td { border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .modern-table tr:last-child td { border-bottom: none; }
+        .badge { padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.8rem; font-weight: 600; }
+        .badge-success { background: rgba(16, 185, 129, 0.15); color: #10b981; }
+
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-logo">EduPlatform.</div>
+            <ul class="sidebar-nav">
+                <li class="nav-item active" data-target="overview">
+                    <span class="icon">📊</span> Genel Bakış
+                </li>
+                <li class="nav-item" data-target="courses">
+                    <span class="icon">🎓</span> Kurslarım
+                </li>
+                <li class="nav-item" data-target="referrals">
+                    <span class="icon">🤝</span> Referans Ağı
+                </li>
+                <li class="nav-item" data-target="transactions">
+                    <span class="icon">💳</span> İşlem Geçmişi
+                </li>
+            </ul>
+            <div class="sidebar-footer">
+                <button id="logoutBtn" class="logout-btn">Çıkış Yap</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="dashboard-header">
+                <div class="header-greeting">
+                    <h1 id="userNameDisplay">Merhaba, ...</h1>
+                    <p class="text-secondary" style="font-size: 0.95rem;">Platformdaki gelişmelere göz atın.</p>
+                </div>
+                <div class="header-actions">
+                    <div class="user-avatar" id="userAvatar">U</div>
+                </div>
+            </header>
+
+            <!-- Premium Upsell Banner (Hidden by default) -->
+            <div id="premiumBanner" class="premium-upsell" style="display: none;">
+                <div class="upsell-content">
+                    <h2>🚀 Premium'a Geçin, Kazanca Başlayın!</h2>
+                    <p>Özel eğitim içeriklerine erişmek ve kendi referans ağınızı kurarak ömür boyu komisyon kazanmak için hemen yükseltin.</p>
+                </div>
+                <button id="buyPremiumBtn" class="upsell-btn">Premium Ol (10.000 ₺)</button>
+            </div>
+
+            <div class="tab-content-area">
+                <!-- Overview Tab -->
+                <div class="tab-pane active" id="tab-overview">
+                    <h2 class="section-title">Finansal Özet</h2>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon bg-success-light">💰</div>
+                            <div class="stat-details">
+                                <span class="stat-label">Mevcut Bakiye</span>
+                                <span class="stat-value text-success" id="valBalance">0 ₺</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon bg-accent-light">📈</div>
+                            <div class="stat-details">
+                                <span class="stat-label">Toplam Komisyon</span>
+                                <span class="stat-value text-accent" id="valEarned">0 ₺</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon bg-purple-light">👥</div>
+                            <div class="stat-details">
+                                <span class="stat-label">Toplam Referans</span>
+                                <span class="stat-value" id="valReferrals">0</span>
+                                <span class="stat-sub">Seviye 2: <b id="valGrandReferrals" style="color:white;">0</b></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Courses Tab -->
+                <div class="tab-pane" id="tab-courses">
+                    <h2 class="section-title">Eğitim Kütüphanesi</h2>
+                    <div class="courses-grid" id="coursesList">
+                        <!-- Loaded via JS -->
+                        <div class="card" style="padding: 2rem; grid-column: 1 / -1; text-align: center;">Yükleniyor...</div>
+                    </div>
+                </div>
+
+                <!-- Referrals Tab -->
+                <div class="tab-pane" id="tab-referrals">
+                    <div class="card premium-lock" id="referralLocked" style="display: none;">
+                        <span class="lock-icon">🔒</span>
+                        <h3>Bu özellik Premium üyelere özeldir</h3>
+                        <p style="color: var(--text-secondary);">Referans kodunuzu görmek ve komisyon kazanmak için hesabınızı yükseltin.</p>
+                    </div>
+                    <div id="referralContent" style="display: none;">
+                        <h2 class="section-title">Referans Bilgileriniz</h2>
+                        <div class="referral-box">
+                            <div style="margin-bottom: 1.5rem;">
+                                <label style="display:block; margin-bottom: 0.5rem; color: var(--text-secondary); font-size: 0.9rem;">Davet Kodunuz</label>
+                                <div class="copy-input-group">
+                                    <input type="text" id="refCodeInput" readonly>
+                                </div>
+                            </div>
+                            <div>
+                                <label style="display:block; margin-bottom: 0.5rem; color: var(--text-secondary); font-size: 0.9rem;">Davet Linkiniz</label>
+                                <div class="copy-input-group">
+                                    <input type="text" id="refLinkInput" readonly>
+                                    <button id="copyLinkBtn" class="copy-btn">Kopyala</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Transactions Tab -->
+                <div class="tab-pane" id="tab-transactions">
+                    <h2 class="section-title">Son Komisyon İşlemleri</h2>
+                    <div class="table-container">
+                        <table class="modern-table">
+                            <thead>
+                                <tr>
+                                    <th>Kaynak</th>
+                                    <th>Ağ Seviyesi</th>
+                                    <th>Tarih</th>
+                                    <th>Durum</th>
+                                    <th>Miktar</th>
+                                </tr>
+                            </thead>
+                            <tbody id="commissionsTableBody">
+                                <!-- Loaded via JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="/js/api.js"></script>
+    <script src="/js/dashboard.js"></script>
+</body>
+</html>
