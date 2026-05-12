@@ -1,0 +1,2154 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduReferans | Yeteneklerini Gelire Dönüştür</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root[data-theme="dark"] {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #13131a;
+            --bg-glass: rgba(20, 20, 28, 0.6);
+            --text-primary: #ffffff;
+            --text-secondary: #a1a1aa;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+            --shadow-md: 0 10px 30px -5px rgba(0, 0, 0, 0.8);
+            --gradient-accent: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+            --accent-glow: rgba(99, 102, 241, 0.4);
+            --card-bg: #181824;
+        }
+
+        :root[data-theme="light"] {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f4f4f5;
+            --bg-glass: rgba(255, 255, 255, 0.7);
+            --text-primary: #09090b;
+            --text-secondary: #52525b;
+            --border-color: rgba(0, 0, 0, 0.08);
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 20px 40px -10px rgba(0, 0, 0, 0.1);
+            --gradient-accent: linear-gradient(135deg, #4f46e5 0%, #9333ea 100%);
+            --accent-glow: rgba(79, 70, 229, 0.3);
+            --card-bg: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #3f3f46;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #52525b;
+        }
+
+        /* Utilities */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .items-center {
+            align-items: center;
+        }
+
+        .justify-between {
+            justify-content: space-between;
+        }
+
+        .justify-center {
+            justify-content: center;
+        }
+
+        .gap-2 {
+            gap: 0.5rem;
+        }
+
+        .gap-4 {
+            gap: 1rem;
+        }
+
+        .gap-6 {
+            gap: 1.5rem;
+        }
+
+        .gap-8 {
+            gap: 2rem;
+        }
+
+        .grid {
+            display: grid;
+        }
+
+        .grid-cols-2 {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .grid-cols-3 {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .grid-cols-4 {
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .text-gradient {
+            background: var(--gradient-accent);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+
+        .section {
+            padding: 8rem 0;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.8rem 1.8rem;
+            border-radius: 99px;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: var(--gradient-accent);
+            color: white;
+            box-shadow: 0 4px 15px var(--accent-glow);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 8px 25px var(--accent-glow);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-secondary);
+            transform: translateY(-2px);
+        }
+
+        /* Navbar */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 1.5rem 0;
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled {
+            padding: 1rem 0;
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 2.5rem;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            font-size: 0.95rem;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .theme-toggle:hover {
+            transform: rotate(15deg);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 12rem 0 8rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -20%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+            opacity: 0.5;
+            z-index: -1;
+            animation: pulse 8s infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: translateX(-50%) scale(1);
+                opacity: 0.4;
+            }
+
+            100% {
+                transform: translateX(-50%) scale(1.1);
+                opacity: 0.7;
+            }
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .hero h1 {
+            font-size: 4.5rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            letter-spacing: -2px;
+        }
+
+        .hover-char {
+            display: inline-block;
+            transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.25s, text-shadow 0.25s;
+            cursor: default;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 2.5rem;
+            max-width: 90%;
+        }
+
+        .hero-visuals {
+            position: relative;
+        }
+
+        .floating-card {
+            background: var(--bg-glass);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow-md);
+            position: absolute;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        .fc-1 {
+            top: -20px;
+            right: 0;
+            width: 300px;
+            z-index: 2;
+        }
+
+        .fc-2 {
+            bottom: -40px;
+            left: -20px;
+            width: 250px;
+            animation-delay: -3s;
+            z-index: 3;
+        }
+
+        .main-mockup {
+            width: 100%;
+            border-radius: 24px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-md);
+            background: var(--card-bg);
+            aspect-ratio: 16/10;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Stats Area */
+        .stats {
+            background: var(--bg-secondary);
+            padding: 4rem 0;
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .stat-card {
+            text-align: center;
+        }
+
+        .stat-num {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.85rem;
+        }
+
+        /* Section Headers */
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            letter-spacing: -1px;
+        }
+
+        .section-header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Categories */
+        .category-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+        }
+
+        .category-card:hover {
+            transform: translateY(-10px);
+            border-color: #6366f1;
+            box-shadow: 0 15px 30px rgba(99, 102, 241, 0.15);
+        }
+
+        .cat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            background: var(--bg-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        /* Popular Courses */
+        .course-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .course-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .course-img {
+            width: 100%;
+            height: 200px;
+            background: var(--bg-secondary);
+            position: relative;
+        }
+
+        .course-img::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
+        }
+
+        .course-content {
+            padding: 1.5rem;
+        }
+
+        .course-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.8rem;
+        }
+
+        .course-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+        }
+
+        .course-author {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .author-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #3f3f46;
+        }
+
+        /* Referral System Info */
+        .referral {
+            position: relative;
+        }
+
+        .referral-box {
+            background: var(--gradient-accent);
+            border-radius: 32px;
+            padding: 5rem 4rem;
+            color: white;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            box-shadow: 0 20px 50px rgba(99, 102, 241, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ref-lines {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 50%;
+            height: 100%;
+            opacity: 0.1;
+            background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0);
+            background-size: 30px 30px;
+        }
+
+        .network-graphic {
+            position: relative;
+            height: 300px;
+        }
+
+        .node {
+            position: absolute;
+            background: white;
+            color: #4f46e5;
+            font-weight: 800;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .node-main {
+            width: 100px;
+            height: 100px;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            font-size: 1.5rem;
+        }
+
+        .node-l1 {
+            width: 80px;
+            height: 80px;
+            top: 20%;
+            right: 20%;
+            font-size: 1.2rem;
+        }
+
+        .node-l2 {
+            width: 60px;
+            height: 60px;
+            bottom: 20%;
+            right: 0;
+            font-size: 1rem;
+        }
+
+        .connection {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.4);
+            height: 2px;
+            transform-origin: left center;
+        }
+
+        /* Dashboard Preview */
+        .dash-preview-container {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 1rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .dash-inner {
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 2rem;
+            min-height: 500px;
+        }
+
+        .skeleton {
+            background: var(--border-color);
+            border-radius: 8px;
+            animation: pulse-skel 2s infinite ease-in-out;
+        }
+
+        @keyframes pulse-skel {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        /* Testimonials */
+        .testimonial-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .stars {
+            color: #fbbf24;
+            margin-bottom: 1rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-secondary);
+            padding: 5rem 0 2rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 4rem;
+            margin-bottom: 4rem;
+        }
+
+        .footer-col h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-col a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-col a:hover {
+            color: var(--text-primary);
+        }
+
+        /* Auth Modal Overlay */
+        .auth-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .auth-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Ambient Light Effects inside Modal Overlay */
+        .auth-overlay::before {
+            content: '';
+            position: absolute;
+            width: 50vw;
+            height: 50vw;
+            background: radial-gradient(circle, var(--accent-glow) 0%, transparent 60%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+            animation: pulse-slow 10s infinite alternate;
+            pointer-events: none;
+        }
+
+        @keyframes pulse-slow {
+            0% {
+                opacity: 0.3;
+                transform: translate(-50%, -50%) scale(0.8);
+            }
+
+            100% {
+                opacity: 0.6;
+                transform: translate(-50%, -50%) scale(1.2);
+            }
+        }
+
+        /* Modal Container */
+        .auth-modal {
+            background: var(--bg-glass);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            width: 100%;
+            max-width: 400px;
+            /* Küçültüldü */
+            padding: 2rem;
+            /* Küçültüldü */
+            position: relative;
+            transform: scale(0.95) translateY(20px);
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: var(--shadow-md), 0 0 0 1px inset rgba(255, 255, 255, 0.05);
+            overflow: hidden;
+        }
+
+        .auth-overlay.active .auth-modal {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+        }
+
+        /* Close Button */
+        .auth-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            z-index: 10;
+        }
+
+        .auth-close:hover {
+            background: var(--text-primary);
+            color: var(--bg-primary);
+            transform: rotate(90deg);
+        }
+
+        /* Slider Container for Forms */
+        .auth-slider-wrapper {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .auth-slider {
+            display: flex;
+            width: 400%;
+            transition: transform 0.5s cubic-bezier(0.32, 0.72, 0, 1);
+        }
+
+        .auth-view {
+            width: 25%;
+            flex-shrink: 0;
+            transition: opacity 0.3s;
+        }
+
+        /* State classes for sliding */
+        .auth-modal[data-view="login"] .auth-slider {
+            transform: translateX(0);
+        }
+
+        .auth-modal[data-view="register"] .auth-slider {
+            transform: translateX(-25%);
+        }
+
+        .auth-modal[data-view="forgot"] .auth-slider {
+            transform: translateX(-50%);
+        }
+
+        .auth-modal[data-view="verify"] .auth-slider {
+            transform: translateX(-75%);
+        }
+
+        .auth-modal[data-view="login"] .auth-view:not(.login-view) {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .auth-modal[data-view="register"] .auth-view:not(.register-view) {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .auth-modal[data-view="forgot"] .auth-view:not(.forgot-view) {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .auth-modal[data-view="verify"] .auth-view:not(.verify-view) {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Auth Form Elements */
+        .auth-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 0.3rem;
+            letter-spacing: -0.5px;
+        }
+
+        .auth-subtitle {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .auth-input-group {
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .auth-input-group label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 0.4rem;
+        }
+
+        .auth-input {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.75rem 1rem;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .auth-input:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 1rem;
+            bottom: 0.8rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
+            z-index: 2;
+        }
+
+        .password-toggle:hover {
+            color: var(--text-primary);
+        }
+
+        .auth-btn {
+            width: 100%;
+            background: var(--gradient-accent);
+            color: white;
+            border: none;
+            padding: 0.85rem;
+            /* Küçültüldü */
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            /* Küçültüldü */
+            cursor: pointer;
+            margin-top: 0.5rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 15px var(--accent-glow);
+        }
+
+        .auth-btn:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.6);
+        }
+
+        .auth-divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 1.5rem 0;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        .auth-divider::before,
+        .auth-divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .auth-divider span {
+            padding: 0 10px;
+        }
+
+        .social-btn {
+            width: 100%;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.75rem;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 0.75rem;
+        }
+
+        .social-btn:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .auth-switch {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .auth-switch span {
+            color: #818cf8;
+            font-weight: 600;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .auth-switch span:hover {
+            color: white;
+        }
+
+        /* Mobile Adjustments for Modal */
+        @media (max-width: 768px) {
+            .auth-overlay {
+                align-items: flex-end;
+                padding: 0;
+            }
+
+            .auth-modal {
+                max-width: 100%;
+                border-radius: 32px 32px 0 0;
+                padding: 2rem 1.5rem 3rem;
+                transform: translateY(100%);
+            }
+
+            .auth-overlay.active .auth-modal {
+                transform: translateY(0);
+            }
+        }
+
+        /* Scroll Reveal Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Custom Cursor */
+        @media (pointer: fine) {
+
+            html,
+            body,
+            * {
+                cursor: none !important;
+            }
+
+            .cursor-dot,
+            .cursor-ring {
+                position: fixed;
+                top: 0;
+                left: 0;
+                pointer-events: none !important;
+                z-index: 99999;
+                border-radius: 50%;
+                transform: translate(-50%, -50%);
+            }
+
+            .cursor-dot {
+                width: 8px;
+                height: 8px;
+                background-color: #6366f1;
+                /* Fixed missing variable */
+                transition: transform 0.2s;
+            }
+
+            .cursor-ring {
+                width: 40px;
+                height: 40px;
+                border: 2px solid rgba(99, 102, 241, 0.5);
+                transition: transform 0.2s, border-color 0.2s, background 0.2s;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero h1 {
+                font-size: 3.5rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .grid-cols-4 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .referral-box {
+                grid-template-columns: 1fr;
+                padding: 3rem 2rem;
+            }
+
+            .dash-inner {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .grid-cols-3 {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Custom Cursor -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-ring"></div>
+
+    <!-- Navbar -->
+    <nav id="navbar">
+        <div class="container flex justify-between items-center">
+            <a href="#" class="logo">EduReferans.</a>
+            <ul class="nav-links">
+                <li><a href="#home">Ana Sayfa</a></li>
+                <li><a href="#categories">Kategoriler</a></li>
+                <li><a href="#courses">Kurslar</a></li>
+                <li><a href="#referral">Referans Sistemi</a></li>
+            </ul>
+            <div class="flex items-center gap-4">
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle Theme">🌙</button>
+                <a href="#" onclick="openAuthModal('login')" class="nav-links"
+                    style="color: var(--text-primary); font-weight: 600; font-size: 0.9rem; text-decoration:none;">Giriş
+                    Yap</a>
+                <a href="#" onclick="openAuthModal('register')" class="btn btn-primary"
+                    style="padding: 0.6rem 1.2rem; font-size: 0.9rem;">Kayıt Ol</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Auth Modal Overlay -->
+    <div class="auth-overlay" id="authOverlay">
+        <div class="auth-modal" id="authModal" data-view="login">
+            <button class="auth-close" onclick="closeAuthModal()">✕</button>
+
+            <div class="auth-slider-wrapper">
+                <div class="auth-slider">
+
+                    <!-- Login View -->
+                    <div class="auth-view login-view">
+                        <h2 class="auth-title">Tekrar Hoş Geldin</h2>
+                        <p class="auth-subtitle">Eğitimine ve kazançlarına kaldığın yerden devam et.</p>
+
+                        <form id="loginForm">
+                            <div class="auth-input-group">
+                                <label>Email Adresi</label>
+                                <input type="email" id="loginEmail" class="auth-input" placeholder="ornek@mail.com"
+                                    required>
+                            </div>
+                            <div class="auth-input-group">
+                                <label>Şifre</label>
+                                <input type="password" id="loginPassword" class="auth-input" placeholder="••••••••"
+                                    required>
+                                <span class="password-toggle"
+                                    onclick="togglePassword(event, 'loginPassword')">Göster</span>
+                            </div>
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; font-size: 0.85rem;">
+                                <label
+                                    style="display: flex; align-items: center; gap: 8px; color: var(--text-secondary); cursor: pointer;">
+                                    <input type="checkbox" style="accent-color: #6366f1;"> Beni Hatırla
+                                </label>
+                                <span style="color: #818cf8; cursor: pointer; font-weight: 500;"
+                                    onclick="setAuthView('forgot')">Şifremi Unuttum</span>
+                            </div>
+                            <button type="submit" class="auth-btn">Giriş Yap</button>
+                            <p id="loginError" class="text-danger mt-1 text-center"
+                                style="font-size: 0.9rem; margin-top: 10px;"></p>
+                        </form>
+
+                        <div class="auth-divider"><span>Veya şununla devam et</span></div>
+
+                        <button class="social-btn">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                                <path
+                                    d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                                    fill="#4285F4" />
+                                <path
+                                    d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                                    fill="#34A853" />
+                                <path
+                                    d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+                                    fill="#FBBC05" />
+                                <path
+                                    d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                                    fill="#EA4335" />
+                            </svg>
+                            Google ile Giriş
+                        </button>
+                        <button class="social-btn">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.04 2.26-.74 3.58-.79 1.56-.05 2.89.65 3.65 1.77-3.14 1.83-2.62 5.76.43 6.94-.74 1.77-1.57 3.38-2.74 4.25zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" />
+                            </svg>
+                            Apple ile Giriş
+                        </button>
+
+                        <p class="auth-switch">Hesabın yok mu? <span onclick="setAuthView('register')">Kayıt Ol</span>
+                        </p>
+                    </div>
+
+                    <!-- Register View -->
+                    <div class="auth-view register-view">
+                        <h2 class="auth-title">Aramıza Katıl</h2>
+                        <p class="auth-subtitle">SaaS platformumuza katılarak öğrenmeye ve kazanmaya başla.</p>
+
+                        <form id="registerForm">
+                            <div class="auth-input-group" style="margin-bottom: 0.8rem;">
+                                <label>Ad Soyad</label>
+                                <input type="text" id="registerName" class="auth-input" placeholder="Adınız Soyadınız"
+                                    required>
+                            </div>
+                            <div class="auth-input-group" style="margin-bottom: 0.8rem;">
+                                <label>Email Adresi</label>
+                                <input type="email" id="registerEmail" class="auth-input" placeholder="ornek@mail.com"
+                                    required>
+                            </div>
+                            <div class="auth-input-group" style="margin-bottom: 0.8rem;">
+                                <label>Şifre</label>
+                                <input type="password" id="registerPassword" class="auth-input"
+                                    placeholder="En az 6 karakter" required>
+                                <span class="password-toggle"
+                                    onclick="togglePassword(event, 'registerPassword')">Göster</span>
+                            </div>
+                            <div class="auth-input-group" style="margin-bottom: 1.2rem;">
+                                <label>Davet Kodu <span
+                                        style="font-size: 0.75rem; font-weight: normal;">(Opsiyonel)</span></label>
+                                <input type="text" id="registerRefCode" class="auth-input"
+                                    placeholder="Varsa referans kodu">
+                            </div>
+
+                            <label
+                                style="display: flex; align-items: flex-start; gap: 8px; color: var(--text-secondary); cursor: pointer; font-size: 0.85rem; margin-bottom: 1rem;">
+                                <input type="checkbox" required style="accent-color: #6366f1; margin-top: 3px;">
+                                <span>Kullanım koşullarını ve Gizlilik politikasını kabul ediyorum.</span>
+                            </label>
+
+                            <button type="submit" class="auth-btn">Kayıt Ol ve Başla</button>
+                            <p id="registerError" class="text-danger mt-1 text-center"
+                                style="font-size: 0.9rem; margin-top: 10px;"></p>
+                            <p id="registerSuccess" class="text-success mt-1 text-center"
+                                style="font-size: 0.9rem; margin-top: 10px;"></p>
+                        </form>
+
+                        <p class="auth-switch" style="margin-top: 1rem;">Zaten hesabın var mı? <span
+                                onclick="setAuthView('login')">Giriş Yap</span></p>
+                    </div>
+
+                    <!-- Forgot Password View -->
+                    <div class="auth-view forgot-view">
+                        <h2 class="auth-title">Şifremi Unuttum</h2>
+                        <p class="auth-subtitle">E-posta adresinizi girin, size bir sıfırlama bağlantısı gönderelim.</p>
+
+                        <form id="forgotForm" onsubmit="handleForgot(event)">
+                            <div class="auth-input-group" style="margin-bottom: 1.5rem;">
+                                <label>Email Adresi</label>
+                                <input type="email" id="forgotEmail" class="auth-input" placeholder="ornek@mail.com"
+                                    required>
+                            </div>
+                            <button type="submit" class="auth-btn">Bağlantı Gönder</button>
+                            <p id="forgotMessage" class="text-success mt-1 text-center"
+                                style="font-size: 0.9rem; margin-top: 10px;"></p>
+                        </form>
+
+                        <p class="auth-switch" style="margin-top: 2rem;"><span onclick="setAuthView('login')">← Giriş
+                                Sayfasına Dön</span></p>
+                    </div>
+
+                    <!-- Verification View -->
+                    <div class="auth-view verify-view">
+                        <h2 class="auth-title">E-posta Doğrulama</h2>
+                        <p class="auth-subtitle">Lütfen <strong id="verifyEmailDisplay"></strong> adresine gönderdiğimiz
+                            6 haneli kodu girin.</p>
+
+                        <!-- Test environment helper -->
+                        <div id="testMockCode"
+                            style="margin: 15px 0; padding: 12px; background: rgba(99, 102, 241, 0.15); border: 1px dashed #6366f1; border-radius: 12px; color: #818cf8; font-size: 0.9rem; text-align: center; display: none;">
+                            <span
+                                style="display: block; font-size: 0.7rem; opacity: 0.8; margin-bottom: 4px; font-weight: 500;">TEST
+                                ORTAMI DOĞRULAMA KODU</span>
+                            <span id="testMockCodeValue"
+                                style="font-weight: 800; font-size: 1.2rem; letter-spacing: 2px;"></span>
+                        </div>
+
+                        <form id="verifyForm">
+                            <input type="hidden" id="verifyEmailInput">
+                            <div class="auth-input-group"
+                                style="margin-bottom: 1.5rem; display: flex; gap: 8px; justify-content: center;">
+                                <input type="text" maxlength="1" class="auth-input otp-input"
+                                    style="width: 3rem; text-align: center; font-size: 1.5rem; font-weight: bold; padding: 0.5rem;"
+                                    required>
+                                <input type="text" maxlength="1" class="auth-input otp-input"
+                                    style="width: 3rem; text-align: center; font-size: 1.5rem; font-weight: bold; padding: 0.5rem;"
+                                    required>
+                                <input type="text" maxlength="1" class="auth-input otp-input"
+                                    style="width: 3rem; text-align: center; font-size: 1.5rem; font-weight: bold; padding: 0.5rem;"
+                                    required>
+                                <input type="text" maxlength="1" class="auth-input otp-input"
+                                    style="width: 3rem; text-align: center; font-size: 1.5rem; font-weight: bold; padding: 0.5rem;"
+                                    required>
+                                <input type="text" maxlength="1" class="auth-input otp-input"
+                                    style="width: 3rem; text-align: center; font-size: 1.5rem; font-weight: bold; padding: 0.5rem;"
+                                    required>
+                                <input type="text" maxlength="1" class="auth-input otp-input"
+                                    style="width: 3rem; text-align: center; font-size: 1.5rem; font-weight: bold; padding: 0.5rem;"
+                                    required>
+                            </div>
+                            <button type="submit" class="auth-btn">Doğrula ve Giriş Yap</button>
+                            <p id="verifyError" class="text-danger mt-1 text-center"
+                                style="font-size: 0.9rem; margin-top: 10px;"></p>
+                        </form>
+
+                        <p class="auth-switch" style="margin-top: 2rem;">Kodu almadınız mı? <span
+                                onclick="alert('Mock: Kod tekrar gönderildi.')">Tekrar Gönder</span></p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container hero-content">
+            <div class="hero-text reveal">
+                <h1>Yeteneklerini <span class="text-gradient">Gelire</span> Dönüştür.</h1>
+                <p>Sektörün uzmanlarından premium eğitim al, kendi topluluğunu kur ve benzersiz 2 seviyeli referans
+                    sistemimizle uyurken bile kazanç elde et.</p>
+                <div class="flex gap-4" style="justify-content: flex-start;">
+                    <a href="#courses" class="btn btn-primary">Eğitime Başla</a>
+                    <a href="#referral" class="btn btn-secondary">Nasıl Çalışır?</a>
+                </div>
+            </div>
+            <div class="hero-visuals reveal" style="transition-delay: 0.2s;">
+                <div class="main-mockup">
+                    <!-- Modern Premium Dashboard Mockup -->
+                    <div
+                        style="padding: 1.5rem; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.02);">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <div
+                                style="width: 32px; height: 32px; border-radius: 8px; background: var(--gradient-accent); display: flex; justify-content: center; align-items: center; color: white; font-weight: 900; font-size: 14px;">
+                                E</div>
+                            <div>
+                                <h4
+                                    style="font-size: 0.9rem; font-weight: 800; color: white; margin: 0; line-height: 1;">
+                                    EduReferans</h4>
+                                <span
+                                    style="font-size: 0.65rem; color: #10b981; font-weight: 700; text-transform: uppercase;">Pro
+                                    Aktif</span>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            <div style="width: 8px; height: 8px; border-radius: 50%; background: #3f3f46;"></div>
+                            <div style="width: 8px; height: 8px; border-radius: 50%; background: #3f3f46;"></div>
+                            <div style="width: 8px; height: 8px; border-radius: 50%; background: #3f3f46;"></div>
+                        </div>
+                    </div>
+                    <div
+                        style="padding: 1.5rem; background: radial-gradient(circle at top right, rgba(99, 102, 241, 0.1), transparent 50%); height: calc(100% - 70px); display: flex; flex-direction: column; gap: 1.5rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+                            <div>
+                                <p
+                                    style="font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; font-weight: 700; margin-bottom: 0.5rem;">
+                                    Toplam Bakiye</p>
+                                <h2
+                                    style="font-size: 2.5rem; font-weight: 900; color: white; letter-spacing: -1px; margin: 0; line-height: 1;">
+                                    ₺12.500<span style="color: var(--text-secondary); font-size: 1.5rem;">,00</span>
+                                </h2>
+                            </div>
+                            <div
+                                style="background: rgba(16, 185, 129, 0.15); color: #10b981; padding: 0.5rem 1rem; border-radius: 12px; font-weight: 800; font-size: 0.8rem; border: 1px solid rgba(16, 185, 129, 0.3);">
+                                +24% Bu Ay
+                            </div>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            <div
+                                style="background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.25rem;">
+                                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 1rem;">
+                                    <div
+                                        style="width: 30px; height: 30px; border-radius: 8px; background: rgba(99, 102, 241, 0.15); display: flex; align-items: center; justify-content: center; color: #6366f1;">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                                            <circle cx="9" cy="7" r="4" />
+                                            <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                                            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                                        </svg>
+                                    </div>
+                                    <span
+                                        style="font-size: 0.8rem; color: var(--text-secondary); font-weight: 600;">Seviye
+                                        1 Referans</span>
+                                </div>
+                                <div style="font-size: 1.5rem; font-weight: 800; color: white; margin-bottom: 0.25rem;">
+                                    24 Kişi</div>
+                                <div style="font-size: 0.75rem; color: #10b981; font-weight: 600;">+3 Yeni (Bugün)</div>
+                            </div>
+                            <div
+                                style="background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.25rem;">
+                                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 1rem;">
+                                    <div
+                                        style="width: 30px; height: 30px; border-radius: 8px; background: rgba(245, 158, 11, 0.15); display: flex; align-items: center; justify-content: center; color: #f59e0b;">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <polygon
+                                                points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                                        </svg>
+                                    </div>
+                                    <span
+                                        style="font-size: 0.8rem; color: var(--text-secondary); font-weight: 600;">Bekleyen
+                                        Komisyon</span>
+                                </div>
+                                <div style="font-size: 1.5rem; font-weight: 800; color: white; margin-bottom: 0.25rem;">
+                                    ₺3.500</div>
+                                <div style="font-size: 0.75rem; color: var(--text-secondary); font-weight: 600;">Aktarım
+                                    Onayında</div>
+                            </div>
+                        </div>
+
+                        <!-- Glowing Line Chart Mock -->
+                        <div
+                            style="flex: 1; background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 16px; position: relative; overflow: hidden; display: flex; align-items: flex-end; padding-top: 1rem;">
+                            <svg width="100%" height="100%" viewBox="0 0 400 100" preserveAspectRatio="none"
+                                style="position: absolute; bottom: -5px; left: 0;">
+                                <defs>
+                                    <linearGradient id="glowLine" x1="0" y1="0" x2="0" y2="1">
+                                        <stop offset="0%" stop-color="rgba(99, 102, 241, 0.5)" />
+                                        <stop offset="100%" stop-color="rgba(99, 102, 241, 0)" />
+                                    </linearGradient>
+                                </defs>
+                                <path d="M0,100 L0,70 Q50,40 100,60 T200,30 T300,50 T400,20 L400,100 Z"
+                                    fill="url(#glowLine)" />
+                                <path d="M0,70 Q50,40 100,60 T200,30 T300,50 T400,20" fill="none" stroke="#6366f1"
+                                    stroke-width="3" stroke-linecap="round" />
+                                <circle cx="400" cy="20" r="5" fill="white" stroke="#6366f1" stroke-width="3" />
+                                <circle cx="300" cy="50" r="4" fill="var(--card-bg)" stroke="#6366f1"
+                                    stroke-width="2" />
+                                <circle cx="200" cy="30" r="4" fill="var(--card-bg)" stroke="#6366f1"
+                                    stroke-width="2" />
+                                <circle cx="100" cy="60" r="4" fill="var(--card-bg)" stroke="#6366f1"
+                                    stroke-width="2" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="floating-card fc-1">
+                    <div style="display:flex; align-items:center; gap:15px;">
+                        <div
+                            style="width:40px; height:40px; border-radius:50%; background:var(--gradient-accent); display:flex; align-items:center; justify-content:center; color:white;">
+                            💰</div>
+                        <div>
+                            <p style="font-size:0.8rem; color:var(--text-secondary); white-space: nowrap;">Yeni Komisyon</p>
+                            <p style="font-weight:700; font-size:1.2rem; white-space: nowrap;">+2.500₺</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="floating-card fc-2">
+                    <div style="display:flex; align-items:center; gap:15px;">
+                        <div
+                            style="width:40px; height:40px; border-radius:50%; background:#10b981; display:flex; align-items:center; justify-content:center; color:white;">
+                            🎓</div>
+                        <div>
+                            <p style="font-size:0.8rem; color:var(--text-secondary);">Kurs Tamamlandı</p>
+                            <p style="font-weight:700; font-size:1rem;">React Mastery</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats -->
+    <section class="stats" id="stats">
+        <div class="container grid grid-cols-4">
+            <div class="stat-card reveal">
+                <div class="stat-num" data-target="15400">0</div>
+                <div class="stat-label">Aktif Öğrenci</div>
+            </div>
+            <div class="stat-card reveal" style="transition-delay: 0.1s;">
+                <div class="stat-num" data-target="240">0</div>
+                <div class="stat-label">Premium Eğitim</div>
+            </div>
+            <div class="stat-card reveal" style="transition-delay: 0.2s;">
+                <div class="stat-num" data-target="85">0</div>
+                <div class="stat-label">Uzman Eğitmen</div>
+            </div>
+            <div class="stat-card reveal" style="transition-delay: 0.3s;">
+                <div class="stat-num" data-target="4500000" data-prefix="₺">0</div>
+                <div class="stat-label">Dağıtılan Komisyon</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories -->
+    <section class="categories section" id="categories">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>Öne Çıkan Kategoriler</h2>
+                <p>Kariyerinize yön verecek, sektörün en çok talep gören alanlarındaki eğitimleri keşfedin.</p>
+            </div>
+            <div class="grid grid-cols-3">
+                <div class="category-card reveal">
+                    <div class="cat-icon">💻</div>
+                    <h3>Yazılım Geliştirme</h3>
+                    <p style="color: var(--text-secondary); margin-top: 0.5rem; font-size: 0.9rem;">Web, Mobil ve
+                        Backend</p>
+                </div>
+                <div class="category-card reveal" style="transition-delay: 0.1s;">
+                    <div class="cat-icon">🤖</div>
+                    <h3>Yapay Zeka</h3>
+                    <p style="color: var(--text-secondary); margin-top: 0.5rem; font-size: 0.9rem;">Machine Learning &
+                        Data</p>
+                </div>
+                <div class="category-card reveal" style="transition-delay: 0.2s;">
+                    <div class="cat-icon">🎨</div>
+                    <h3>UI/UX Tasarım</h3>
+                    <p style="color: var(--text-secondary); margin-top: 0.5rem; font-size: 0.9rem;">Figma & Web Design
+                    </p>
+                </div>
+                <div class="category-card reveal">
+                    <div class="cat-icon">📈</div>
+                    <h3>Finans & Kripto</h3>
+                    <p style="color: var(--text-secondary); margin-top: 0.5rem; font-size: 0.9rem;">Yatırım Stratejileri
+                    </p>
+                </div>
+                <div class="category-card reveal" style="transition-delay: 0.1s;">
+                    <div class="cat-icon">🛒</div>
+                    <h3>E-Ticaret</h3>
+                    <p style="color: var(--text-secondary); margin-top: 0.5rem; font-size: 0.9rem;">Shopify & Amazon FBA
+                    </p>
+                </div>
+                <div class="category-card reveal" style="transition-delay: 0.2s;">
+                    <div class="cat-icon">🚀</div>
+                    <h3>Girişimcilik</h3>
+                    <p style="color: var(--text-secondary); margin-top: 0.5rem; font-size: 0.9rem;">Startup & SaaS
+                        Kurulumu</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Popular Courses -->
+    <section class="courses section" style="background: var(--bg-secondary);" id="courses">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>Popüler Eğitimler</h2>
+                <p>Öğrencilerimiz tarafından en çok tercih edilen ve en yüksek puanlı eğitimlerimiz.</p>
+            </div>
+            <div class="grid grid-cols-3">
+                <!-- Course 1 -->
+                <div class="course-card reveal">
+                    <div class="course-img"
+                        style="background-image: url('https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80'); background-size: cover; background-position: center;">
+                    </div>
+                    <div class="course-content">
+                        <div class="course-meta">
+                            <span>💻 Yazılım</span>
+                            <span>⭐ 4.9 (2.1k)</span>
+                        </div>
+                        <h3 class="course-title">Full-Stack SaaS Mimarisi: Sıfırdan Projeye</h3>
+                        <p style="color: var(--text-secondary); font-size: 0.9rem;">MERN stack ve Prisma ile kendi SaaS
+                            ürününüzü nasıl kuracağınızı öğrenin.</p>
+                        <div class="course-author">
+                            <div class="author-avatar"></div>
+                            <span style="font-size: 0.9rem; font-weight: 500;">Ahmet Yılmaz</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Course 2 -->
+                <div class="course-card reveal" style="transition-delay: 0.1s;">
+                    <div class="course-img"
+                        style="background-image: url('https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=800&q=80'); background-size: cover; background-position: center;">
+                    </div>
+                    <div class="course-content">
+                        <div class="course-meta">
+                            <span>🎨 Tasarım</span>
+                            <span>⭐ 4.8 (1.5k)</span>
+                        </div>
+                        <h3 class="course-title">Modern UI/UX ve Glassmorphism Masterclass</h3>
+                        <p style="color: var(--text-secondary); font-size: 0.9rem;">Göz alıcı web arayüzleri
+                            tasarlamanın modern sırları ve psikolojisi.</p>
+                        <div class="course-author">
+                            <div class="author-avatar"></div>
+                            <span style="font-size: 0.9rem; font-weight: 500;">Elif Kaya</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Course 3 -->
+                <div class="course-card reveal" style="transition-delay: 0.2s;">
+                    <div class="course-img"
+                        style="background-image: url('https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=800&q=80'); background-size: cover; background-position: center;">
+                    </div>
+                    <div class="course-content">
+                        <div class="course-meta">
+                            <span>🤖 Yapay Zeka</span>
+                            <span>⭐ 5.0 (890)</span>
+                        </div>
+                        <h3 class="course-title">AI Entegrasyonları ve Prompt Mühendisliği</h3>
+                        <p style="color: var(--text-secondary); font-size: 0.9rem;">Projelerinize ChatGPT ve Claude
+                            yeteneklerini API ile nasıl eklersiniz?</p>
+                        <div class="course-author">
+                            <div class="author-avatar"></div>
+                            <span style="font-size: 0.9rem; font-weight: 500;">Can Demir</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-2 reveal">
+                <a href="/index.html" class="btn btn-secondary" style="margin-top: 2rem;">Tüm Eğitimleri İncele</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Referral Info -->
+    <section class="section" id="referral">
+        <div class="container">
+            <div class="referral-box reveal">
+                <div class="ref-lines"></div>
+                <div style="position: relative; z-index: 10;">
+                    <h2 style="font-size: 3rem; font-weight: 800; margin-bottom: 1rem; line-height: 1.1;">
+                        Öğrenirken<br>Kazanın.</h2>
+                    <p style="font-size: 1.1rem; opacity: 0.9; margin-bottom: 2rem;">Türkiye'nin ilk 2 seviyeli eğitim
+                        referans sistemi. Arkadaşlarınızı davet edin, onların da davetlerinden komisyon kazanın.</p>
+                    <ul style="list-style: none; margin-bottom: 2rem;">
+                        <li style="margin-bottom: 1rem; display: flex; align-items: center; gap: 10px;">
+                            <span
+                                style="background: rgba(255,255,255,0.2); padding: 5px 10px; border-radius: 8px; font-weight: 700;">%25</span>
+                            Level 1 (Doğrudan Davet)
+                        </li>
+                        <li style="display: flex; align-items: center; gap: 10px;">
+                            <span
+                                style="background: rgba(255,255,255,0.2); padding: 5px 10px; border-radius: 8px; font-weight: 700;">%10</span>
+                            Level 2 (Ağınızdan Gelenler)
+                        </li>
+                    </ul>
+                    <a href="/index.html#register-section" class="btn" style="background: white; color: #4f46e5;"
+                        onclick="openAuthModal('register'); return false;">Hemen Başla</a>
+                </div>
+                <div class="network-graphic">
+                    <div class="node node-main">Siz</div>
+                    <!-- CSS Connections simulated via rotation -->
+                    <div class="connection"
+                        style="width: 140px; top: 50%; left: 100px; transform: translateY(-50%) rotate(-35deg);"></div>
+                    <div class="node node-l1">A</div>
+                    <div class="connection" style="width: 100px; top: 20%; right: 20%; transform: rotate(80deg);"></div>
+                    <div class="node node-l2">B</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dashboard Preview -->
+    <section class="section" style="background: var(--bg-secondary);" id="dashboard">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>Gelişmiş Kullanıcı Paneli</h2>
+                <p>Eğitimlerinizi, referans kodunuzu ve anlık bakiye/komisyon durumunuzu tek ekrandan yönetin.</p>
+            </div>
+            <!-- Skeleton preview removed -->
+
+            <!-- Recent Transactions Table Example -->
+            <div class="recent-transactions-preview reveal" style="animation-delay: 0.2s;">
+                <div
+                    style="background: var(--bg-glass); border: 1px solid var(--border-color); border-radius: 20px; padding: 2rem; box-shadow: var(--shadow-md); backdrop-filter: blur(16px);">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                        <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--text-primary); margin: 0;">Son
+                            İşlemler</h3>
+                        <span
+                            style="font-size: 0.75rem; font-weight: 700; color: #6366f1; background: rgba(99, 102, 241, 0.1); padding: 0.4rem 1rem; border-radius: 20px; text-transform: uppercase; letter-spacing: 1px;">Canlı
+                            Veri</span>
+                    </div>
+                    <div style="overflow-x: auto;">
+                        <table style="width: 100%; border-collapse: collapse; text-align: left; min-width: 600px;">
+                            <thead>
+                                <tr style="border-bottom: 1px solid var(--border-color);">
+                                    <th
+                                        style="padding: 1rem 1rem 1rem 0; color: var(--text-secondary); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px;">
+                                        İşlem / Kullanıcı</th>
+                                    <th
+                                        style="padding: 1rem; color: var(--text-secondary); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px;">
+                                        Tarih</th>
+                                    <th
+                                        style="padding: 1rem; color: var(--text-secondary); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px;">
+                                        Tür</th>
+                                    <th
+                                        style="padding: 1rem 0 1rem 1rem; color: var(--text-secondary); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; text-align: right;">
+                                        Tutar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="border-bottom: 1px solid var(--border-color); transition: background 0.3s; cursor: default;"
+                                    onmouseover="this.style.background='rgba(255,255,255,0.02)'"
+                                    onmouseout="this.style.background='transparent'">
+                                    <td style="padding: 1.25rem 1rem 1.25rem 0;">
+                                        <div style="display: flex; align-items: center; gap: 1rem;">
+                                            <div
+                                                style="width: 40px; height: 40px; border-radius: 12px; background: rgba(16, 185, 129, 0.1); color: #10b981; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.9rem; border: 1px solid rgba(16, 185, 129, 0.2);">
+                                                AK</div>
+                                            <div>
+                                                <span
+                                                    style="font-weight: 800; color: var(--text-primary); display: block;">Ahmet
+                                                    Kaya</span>
+                                                <span style="font-size: 0.75rem; color: var(--text-secondary);">Pro
+                                                    Üyelik Referansı</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td
+                                        style="padding: 1.25rem 1rem; color: var(--text-secondary); font-size: 0.9rem; font-weight: 500;">
+                                        Bugün, 14:30</td>
+                                    <td style="padding: 1.25rem 1rem;">
+                                        <span
+                                            style="background: rgba(16, 185, 129, 0.1); color: #10b981; padding: 0.4rem 0.8rem; border-radius: 8px; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; border: 1px solid rgba(16, 185, 129, 0.2); letter-spacing: 0.5px;">Seviye
+                                            1 Komisyon</span>
+                                    </td>
+                                    <td
+                                        style="padding: 1.25rem 0 1.25rem 1rem; font-weight: 900; color: #10b981; text-align: right; font-size: 1.1rem;">
+                                        +₺2.500,00</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid var(--border-color); transition: background 0.3s; cursor: default;"
+                                    onmouseover="this.style.background='rgba(255,255,255,0.02)'"
+                                    onmouseout="this.style.background='transparent'">
+                                    <td style="padding: 1.25rem 1rem 1.25rem 0;">
+                                        <div style="display: flex; align-items: center; gap: 1rem;">
+                                            <div
+                                                style="width: 40px; height: 40px; border-radius: 12px; background: rgba(59, 130, 246, 0.1); color: #3b82f6; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.9rem; border: 1px solid rgba(59, 130, 246, 0.2);">
+                                                MY</div>
+                                            <div>
+                                                <span
+                                                    style="font-weight: 800; color: var(--text-primary); display: block;">Mehmet
+                                                    Yılmaz</span>
+                                                <span style="font-size: 0.75rem; color: var(--text-secondary);">Alt
+                                                    Referans Kazancı</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td
+                                        style="padding: 1.25rem 1rem; color: var(--text-secondary); font-size: 0.9rem; font-weight: 500;">
+                                        Dün, 09:15</td>
+                                    <td style="padding: 1.25rem 1rem;">
+                                        <span
+                                            style="background: rgba(59, 130, 246, 0.1); color: #3b82f6; padding: 0.4rem 0.8rem; border-radius: 8px; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; border: 1px solid rgba(59, 130, 246, 0.2); letter-spacing: 0.5px;">Seviye
+                                            2 Komisyon</span>
+                                    </td>
+                                    <td
+                                        style="padding: 1.25rem 0 1.25rem 1rem; font-weight: 900; color: #3b82f6; text-align: right; font-size: 1.1rem;">
+                                        +₺1.000,00</td>
+                                </tr>
+                                <tr style="transition: background 0.3s; cursor: default;"
+                                    onmouseover="this.style.background='rgba(255,255,255,0.02)'"
+                                    onmouseout="this.style.background='transparent'">
+                                    <td style="padding: 1.25rem 1rem 1.25rem 0;">
+                                        <div style="display: flex; align-items: center; gap: 1rem;">
+                                            <div
+                                                style="width: 40px; height: 40px; border-radius: 12px; background: rgba(245, 158, 11, 0.1); color: #f59e0b; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(245, 158, 11, 0.2);">
+                                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                                    stroke-linejoin="round">
+                                                    <rect x="2" y="5" width="20" height="14" rx="2" />
+                                                    <line x1="2" y1="10" x2="22" y2="10" />
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <span
+                                                    style="font-weight: 800; color: var(--text-primary); display: block;">Para
+                                                    Çekme Talebi</span>
+                                                <span style="font-size: 0.75rem; color: var(--text-secondary);">Banka
+                                                    Hesabına Transfer</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td
+                                        style="padding: 1.25rem 1rem; color: var(--text-secondary); font-size: 0.9rem; font-weight: 500;">
+                                        3 Gün Önce</td>
+                                    <td style="padding: 1.25rem 1rem;">
+                                        <span
+                                            style="background: rgba(245, 158, 11, 0.1); color: #f59e0b; padding: 0.4rem 0.8rem; border-radius: 8px; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; border: 1px solid rgba(245, 158, 11, 0.2); letter-spacing: 0.5px;">İşleniyor</span>
+                                    </td>
+                                    <td
+                                        style="padding: 1.25rem 0 1.25rem 1rem; font-weight: 900; color: var(--text-primary); text-align: right; font-size: 1.1rem;">
+                                        -₺5.000,00</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid reveal">
+                <div class="footer-col">
+                    <h3 class="logo" style="margin-bottom: 1rem; display: block;">EduReferans.</h3>
+                    <p style="color: var(--text-secondary); max-width: 300px; font-size: 0.95rem;">Yazılım ve teknoloji
+                        eğitimlerinde yeni nesil ekosistem. Öğren, uygula, paylaş ve kazan.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Platform</h4>
+                    <ul>
+                        <li><a href="#courses">Eğitimler</a></li>
+                        <li><a href="#referral">Referans Sistemi</a></li>
+                        <li><a href="/faq">Sıkça Sorulan Sorular</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Kurumsal</h4>
+                    <ul>
+                        <li><a href="#">Hakkımızda</a></li>
+                        <li><a href="#">Eğitmen Ol</a></li>
+                        <li><a href="#">İletişim</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Yasal</h4>
+                    <ul>
+                        <li><a href="#">Kullanım Koşulları</a></li>
+                        <li><a href="#">Gizlilik Politikası</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div style="text-align: center; color: var(--text-secondary); font-size: 0.9rem; padding-top: 2rem; border-top: 1px solid var(--border-color);"
+                class="reveal">
+                &copy; 2026 EduReferans. Tüm hakları saklıdır.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="/js/api.js"></script>
+    <script src="/js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Split hero text into spans for hover effect
+            const heroTitle = document.querySelector('.hero h1');
+            if (heroTitle) {
+                const text = heroTitle.textContent;
+                const words = text.split(' ');
+                heroTitle.innerHTML = '';
+
+                words.forEach((word, wordIndex) => {
+                    const wordSpan = document.createElement('span');
+                    wordSpan.style.display = 'inline-block';
+                    wordSpan.style.whiteSpace = 'nowrap';
+
+                    for (let i = 0; i < word.length; i++) {
+                        const charSpan = document.createElement('span');
+                        charSpan.textContent = word[i];
+                        charSpan.classList.add('hover-char');
+                        wordSpan.appendChild(charSpan);
+                    }
+
+                    heroTitle.appendChild(wordSpan);
+
+                    if (wordIndex < words.length - 1) {
+                        const spaceSpan = document.createElement('span');
+                        spaceSpan.innerHTML = '&nbsp;';
+                        heroTitle.appendChild(spaceSpan);
+                    }
+                });
+
+                // JavaScript Wave Effect
+                const chars = document.querySelectorAll('.hover-char');
+                chars.forEach((char, index) => {
+                    char.addEventListener('mouseenter', () => {
+                        // Center char
+                        char.style.transform = 'translateY(-10px) scale(1.05)';
+                        char.style.color = '#818cf8';
+                        char.style.textShadow = '0 10px 20px rgba(99, 102, 241, 0.4)';
+
+                        // Previous char
+                        if (index > 0 && chars[index - 1]) {
+                            chars[index - 1].style.transform = 'translateY(-5px) scale(1.02)';
+                            chars[index - 1].style.color = '#a5b4fc';
+                        }
+
+                        // Next char
+                        if (index < chars.length - 1 && chars[index + 1]) {
+                            chars[index + 1].style.transform = 'translateY(-5px) scale(1.02)';
+                            chars[index + 1].style.color = '#a5b4fc';
+                        }
+                    });
+
+                    char.addEventListener('mouseleave', () => {
+                        char.style.transform = '';
+                        char.style.color = '';
+                        char.style.textShadow = '';
+
+                        if (index > 0 && chars[index - 1]) {
+                            chars[index - 1].style.transform = '';
+                            chars[index - 1].style.color = '';
+                        }
+
+                        if (index < chars.length - 1 && chars[index + 1]) {
+                            chars[index + 1].style.transform = '';
+                            chars[index + 1].style.color = '';
+                        }
+                    });
+                });
+            }
+
+            // Navbar Scroll Effect
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+
+            // Dark/Light Mode Toggle
+            const themeToggle = document.getElementById('themeToggle');
+            const htmlNode = document.documentElement;
+
+            themeToggle.addEventListener('click', () => {
+                const currentTheme = htmlNode.getAttribute('data-theme');
+                if (currentTheme === 'dark') {
+                    htmlNode.setAttribute('data-theme', 'light');
+                    themeToggle.textContent = '☀️';
+                } else {
+                    htmlNode.setAttribute('data-theme', 'dark');
+                    themeToggle.textContent = '🌙';
+                }
+            });
+
+            // Scroll Reveal Animation (Intersection Observer)
+            const revealElements = document.querySelectorAll('.reveal');
+
+            const revealOptions = {
+                threshold: 0.15,
+                rootMargin: "0px 0px -50px 0px"
+            };
+
+            const revealOnScroll = new IntersectionObserver(function (entries, observer) {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) {
+                        return;
+                    } else {
+                        entry.target.classList.add('active');
+
+                        // If it's a counter, trigger it
+                        if (entry.target.classList.contains('stat-card')) {
+                            const counter = entry.target.querySelector('.stat-num');
+                            if (counter && !counter.classList.contains('counted')) {
+                                runCounter(counter);
+                            }
+                        }
+
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, revealOptions);
+
+            revealElements.forEach(el => {
+                revealOnScroll.observe(el);
+            });
+
+            // Counter Animation
+            function runCounter(counter) {
+                counter.classList.add('counted');
+                const target = +counter.getAttribute('data-target');
+                const prefix = counter.getAttribute('data-prefix') || '';
+                const duration = 2000; // ms
+                const increment = target / (duration / 16); // 60fps
+
+                let current = 0;
+                const updateCounter = () => {
+                    current += increment;
+                    if (current < target) {
+                        counter.innerText = prefix + Math.ceil(current).toLocaleString('tr-TR');
+                        requestAnimationFrame(updateCounter);
+                    } else {
+                        counter.innerText = prefix + target.toLocaleString('tr-TR');
+                    }
+                };
+                updateCounter();
+            }
+
+            // Custom Cursor Logic
+            if (window.matchMedia("(pointer: fine)").matches) {
+                const dot = document.querySelector('.cursor-dot');
+                const ring = document.querySelector('.cursor-ring');
+                let mouseX = window.innerWidth / 2;
+                let mouseY = window.innerHeight / 2;
+                let ringX = mouseX;
+                let ringY = mouseY;
+
+                window.addEventListener('mousemove', (e) => {
+                    mouseX = e.clientX;
+                    mouseY = e.clientY;
+                    dot.style.left = `${mouseX}px`;
+                    dot.style.top = `${mouseY}px`;
+                });
+
+                const renderCursor = () => {
+                    ringX += (mouseX - ringX) * 0.15;
+                    ringY += (mouseY - ringY) * 0.15;
+                    ring.style.left = `${ringX}px`;
+                    ring.style.top = `${ringY}px`;
+                    requestAnimationFrame(renderCursor);
+                };
+                requestAnimationFrame(renderCursor);
+
+                // Hover Effects
+                const interactables = document.querySelectorAll('a, button, input');
+                interactables.forEach(el => {
+                    el.addEventListener('mouseenter', () => {
+                        dot.style.transform = 'translate(-50%, -50%) scale(1.5)';
+                        ring.style.transform = 'translate(-50%, -50%) scale(1.5)';
+                        ring.style.borderColor = 'var(--text-primary)';
+                        ring.style.background = 'rgba(255,255,255,0.05)';
+                    });
+                    el.addEventListener('mouseleave', () => {
+                        dot.style.transform = 'translate(-50%, -50%) scale(1)';
+                        ring.style.transform = 'translate(-50%, -50%) scale(1)';
+                        ring.style.borderColor = 'rgba(99, 102, 241, 0.5)';
+                        ring.style.background = 'transparent';
+                    });
+                });
+            }
+
+            // Auth Modal Logic
+            const authOverlay = document.getElementById('authOverlay');
+            const authModal = document.getElementById('authModal');
+
+            window.openAuthModal = (view) => {
+                if (event) event.preventDefault();
+
+                // Disable transition temporarily to prevent initial slide effect
+                const slider = document.querySelector('.auth-slider');
+                slider.style.transition = 'none';
+
+                window.setAuthView(view);
+
+                // Force reflow and use setTimeout to ensure browser applies 'none' before re-enabling
+                void slider.offsetWidth;
+
+                setTimeout(() => {
+                    slider.style.transition = '';
+                }, 50);
+
+                authOverlay.classList.add('active');
+                document.body.style.overflow = 'hidden'; // prevent background scroll
+            };
+
+            window.closeAuthModal = () => {
+                authOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            };
+
+            window.setAuthView = (view) => {
+                authModal.setAttribute('data-view', view);
+                // Clear any leftover messages
+                const forgotMsg = document.getElementById('forgotMessage');
+                if (forgotMsg) forgotMsg.textContent = '';
+                const verifyErr = document.getElementById('verifyError');
+                if (verifyErr) verifyErr.textContent = '';
+                const testCodeBox = document.getElementById('testMockCode');
+                if (testCodeBox) testCodeBox.style.display = 'none';
+            };
+
+            // OTP Input Logic
+            const otpInputs = document.querySelectorAll('.otp-input');
+            otpInputs.forEach((input, index) => {
+                input.addEventListener('input', (e) => {
+                    if (e.target.value.length === 1 && index < otpInputs.length - 1) {
+                        otpInputs[index + 1].focus();
+                    }
+                });
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Backspace' && !e.target.value && index > 0) {
+                        otpInputs[index - 1].focus();
+                    }
+                });
+            });
+
+            window.handleForgot = (e) => {
+                e.preventDefault();
+                const btn = e.target.querySelector('button');
+                const emailInput = document.getElementById('forgotEmail');
+                if (!emailInput.value) return;
+
+                btn.textContent = 'Gönderiliyor...';
+                btn.style.opacity = '0.7';
+
+                setTimeout(() => {
+                    btn.textContent = 'Bağlantı Gönder';
+                    btn.style.opacity = '1';
+                    document.getElementById('forgotMessage').textContent = 'Şifre sıfırlama bağlantısı gönderildi! Lütfen gelen kutunuzu kontrol edin.';
+                    emailInput.value = '';
+                }, 1500);
+            };
+
+            window.togglePassword = (e, inputId) => {
+                const input = document.getElementById(inputId);
+                const span = e.target;
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    span.textContent = 'Gizle';
+                } else {
+                    input.type = 'password';
+                    span.textContent = 'Göster';
+                }
+            };
+
+            // Close modal on escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && authOverlay.classList.contains('active')) {
+                    closeAuthModal();
+                }
+            });
+
+            // Close modal on outside click
+            authOverlay.addEventListener('mousedown', (e) => {
+                if (e.target === authOverlay) {
+                    closeAuthModal();
+                }
+            });
+
+            // Check if user is logged in and update UI
+            const checkAuth = () => {
+                // Check if we came here from a logout action
+                if (new URLSearchParams(window.location.search).get('logout') === 'true') {
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('user');
+                    window.history.replaceState({}, document.title, "/"); // Clean URL
+                }
+
+                const user = JSON.parse(localStorage.getItem('user'));
+                const token = localStorage.getItem('token');
+
+                if (user && token) {
+                    const authContainer = document.querySelector('.flex.items-center.gap-4');
+                    if (authContainer) {
+                        authContainer.innerHTML = `
+                            <button class="theme-toggle" id="themeToggle" aria-label="Toggle Theme">🌙</button>
+                            <a href="http://${window.location.hostname}:5173/dashboard" class="nav-links" style="color: var(--text-primary); font-weight: 600; font-size: 0.9rem; text-decoration:none; display:flex; align-items:center; gap:8px;">
+                                <div style="width:32px; height:32px; border-radius:50%; background:var(--gradient-accent); display:flex; align-items:center; justify-content:center; color:white; font-size:0.7rem; font-weight:bold;">
+                                    ${user.name.split(' ').map(n => n[0]).join('').toUpperCase()}
+                                </div>
+                                <span>${user.name}</span>
+                            </a>
+                            <button onclick="window.landingLogout()" style="background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2); padding: 6px 12px; border-radius: 8px; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: all 0.3s;">
+                                Çıkış Yap
+                            </button>
+                        `;
+
+                        window.landingLogout = () => {
+                            localStorage.removeItem('token');
+                            localStorage.removeItem('user');
+                            window.location.reload();
+                        };
+                        // Re-attach theme toggle listener since we replaced innerHTML
+                        const newThemeToggle = document.getElementById('themeToggle');
+                        newThemeToggle.addEventListener('click', () => {
+                            const htmlNode = document.documentElement;
+                            const currentTheme = htmlNode.getAttribute('data-theme');
+                            if (currentTheme === 'dark') {
+                                htmlNode.setAttribute('data-theme', 'light');
+                                newThemeToggle.textContent = '☀️';
+                            } else {
+                                htmlNode.setAttribute('data-theme', 'dark');
+                                newThemeToggle.textContent = '🌙';
+                            }
+                        });
+                    }
+                }
+            };
+            checkAuth();
+
+        });
+    </script>
+</body>
+
+</html>

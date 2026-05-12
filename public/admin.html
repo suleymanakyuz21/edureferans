@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Eğitim Platformu</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <nav class="animate-fade-up">
+        <div class="container">
+            <a href="/admin.html" class="logo">Admin Panel</a>
+            <ul>
+                <li><a href="/dashboard.html">Kullanıcı Paneline Dön</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container mt-2">
+        <h1 class="mb-2 animate-fade-up delay-1 opacity-0 text-3xl">Yönetim Paneli</h1>
+        
+        <div class="grid grid-cols-2 mb-2">
+            <div class="card animate-fade-up delay-2 opacity-0">
+                <h2 class="text-xl mb-1">Kullanıcılar</h2>
+                <div style="overflow-x: auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Ad</th>
+                                <th>Email</th>
+                                <th>Bakiye</th>
+                                <th>Premium</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card animate-fade-up delay-3 opacity-0">
+                <h2 class="text-xl mb-1">Ödemeler</h2>
+                <div style="overflow-x: auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Kullanıcı</th>
+                                <th>Tutar</th>
+                                <th>Durum</th>
+                            </tr>
+                        </thead>
+                        <tbody id="paymentsTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="card animate-fade-up delay-1 opacity-0 mb-2">
+            <h2 class="text-xl mb-1">Tüm Komisyonlar</h2>
+            <div style="overflow-x: auto;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Gönderen</th>
+                            <th>Alan</th>
+                            <th>Seviye</th>
+                            <th>Tutar</th>
+                            <th>Tarih</th>
+                        </tr>
+                    </thead>
+                    <tbody id="commissionsTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/api.js"></script>
+    <script src="/js/admin.js"></script>
+</body>
+</html>
