@@ -9,8 +9,9 @@ import { Mail, Lock, ArrowRight, LogIn } from 'lucide-react';
 import Link from 'next/link';
 import api from '@/lib/api';
 import { useRouter } from 'next/navigation';
+import { useAuthStore } from '@/store/useAuthStore';
 
-const loginSchema = z.z.object({
+const loginSchema = z.object({
   email: z.string().email('Geçerli bir e-posta adresi giriniz'),
   password: z.string().min(1, 'Şifre gereklidir'),
 });
@@ -21,6 +22,7 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+  const { setAuth } = useAuthStore();
 
   const { register, handleSubmit, formState: { errors } } = useForm<LoginValues>({
     resolver: zodResolver(loginSchema),
@@ -31,11 +33,13 @@ export default function Login() {
     setError(null);
     try {
       const response = await api.post('/auth/login', data);
-      localStorage.setItem('token', response.data.data.token);
-      localStorage.setItem('user', JSON.stringify(response.data.data.user));
+      const { token, user } = response.data.data;
+      localStorage.setItem('token', token);
+      setAuth(user, token);
       router.push('/dashboard');
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Giriş başarısız. Lütfen bilgilerinizi kontrol edin.');
+    } catch (err: unknown) {
+      const e = err as { response?: { data?: { message?: string } } };
+      setError(e.response?.data?.message || 'Giriş başarısız. Lütfen bilgilerinizi kontrol edin.');
     } finally {
       setIsLoading(false);
     }
@@ -71,7 +75,7 @@ export default function Login() {
               {...register('email')}
               type="email" 
               placeholder="E-posta"
-              className="w-full bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-xl py-4 pl-12 pr-4 focus:outline-none focus:border-indigo-500 transition-all"
+              className="w-full bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-xl py-4 pl-12 pr-4 focus:outline-none focus:border-indigo-500 transition-all text-[var(--text-primary)]"
             />
             {errors.email && <p className="mt-1 text-xs text-red-500">{errors.email.message}</p>}
           </div>
@@ -82,7 +86,7 @@ export default function Login() {
               {...register('password')}
               type="password" 
               placeholder="Şifre"
-              className="w-full bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-xl py-4 pl-12 pr-4 focus:outline-none focus:border-indigo-500 transition-all"
+              className="w-full bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-xl py-4 pl-12 pr-4 focus:outline-none focus:border-indigo-500 transition-all text-[var(--text-primary)]"
             />
             {errors.password && <p className="mt-1 text-xs text-red-500">{errors.password.message}</p>}
           </div>
@@ -96,7 +100,7 @@ export default function Login() {
           <button 
             type="submit"
             disabled={isLoading}
-            className="w-full py-4 bg-[var(--gradient-accent)] text-white font-bold rounded-xl flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-[0.98] transition-all shadow-lg shadow-indigo-500/20 disabled:opacity-70"
+            className="w-full py-4 btn-gradient text-white font-bold rounded-xl flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-[0.98] transition-all shadow-lg shadow-indigo-500/20 disabled:opacity-70 disabled:cursor-not-allowed"
           >
             {isLoading ? 'Giriş Yapılıyor...' : 'Giriş Yap'} <ArrowRight size={20} />
           </button>

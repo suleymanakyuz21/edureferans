@@ -9,8 +9,9 @@ import { User, Mail, Lock, ArrowRight, CheckCircle2 } from 'lucide-react';
 import Link from 'next/link';
 import api from '@/lib/api';
 import { useRouter } from 'next/navigation';
+import { useAuthStore } from '@/store/useAuthStore';
 
-const registerSchema = z.z.object({
+const registerSchema = z.object({
   name: z.string().min(2, 'İsim en az 2 karakter olmalıdır'),
   email: z.string().email('Geçerli bir e-posta adresi giriniz'),
   password: z.string().min(6, 'Şifre en az 6 karakter olmalıdır'),
@@ -25,7 +26,9 @@ export default function Register() {
   const [step, setStep] = useState<'form' | 'verify'>('form');
   const [tempEmail, setTempEmail] = useState('');
   const [mockCode, setMockCode] = useState('');
+  const [verifyCode, setVerifyCode] = useState('');
   const router = useRouter();
+  const { setAuth } = useAuthStore();
 
   const { register, handleSubmit, formState: { errors } } = useForm<RegisterValues>({
     resolver: zodResolver(registerSchema),
@@ -37,25 +40,28 @@ export default function Register() {
     try {
       const response = await api.post('/auth/register', data);
       setTempEmail(data.email);
-      setMockCode(response.data.data.mockCode); // For testing ease
+      setMockCode(response.data.data.mockCode || '');
       setStep('verify');
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Bir hata oluştu. Lütfen tekrar deneyin.');
+    } catch (err: unknown) {
+      const e = err as { response?: { data?: { message?: string } } };
+      setError(e.response?.data?.message || 'Bir hata oluştu. Lütfen tekrar deneyin.');
     } finally {
       setIsLoading(false);
     }
   };
 
-  const [verifyCode, setVerifyCode] = useState('');
   const handleVerify = async () => {
     setIsLoading(true);
+    setError(null);
     try {
       const response = await api.post('/auth/verify', { email: tempEmail, code: verifyCode });
-      localStorage.setItem('token', response.data.data.token);
-      localStorage.setItem('user', JSON.stringify(response.data.data.user));
+      const { token, user } = response.data.data;
+      localStorage.setItem('token', token);
+      setAuth(user, token);
       router.push('/dashboard');
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Doğrulama başarısız.');
+    } catch (err: unknown) {
+      const e = err as { response?: { data?: { message?: string } } };
+      setError(e.response?.data?.message || 'Doğrulama başarısız. Lütfen tekrar deneyin.');
     } finally {
       setIsLoading(false);
     }
@@ -92,7 +98,7 @@ export default function Register() {
                   {...register('name')}
                   type="text" 
                   placeholder="Ad Soyad"
-                  className="w-full bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-xl py-4 pl-12 pr-4 focus:outline-none focus:border-indigo-500 transition-all"
+                  className="w-full bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-xl py-4 pl-12 pr-4 focus:outline-none focus:border-indigo-500 transition-all text-[var(--text-primary)]"
                 />
                 {errors.name && <p className="mt-1 text-xs text-red-500">{errors.name.message}</p>}
               </div>
@@ -103,7 +109,7 @@ export default function Register() {
                   {...register('email')}
                   type="email" 
                   placeholder="E-posta"
-                  className="w-full bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-xl py-4 pl-12 pr-4 focus:outline-none focus:border-indigo-500 transition-all"
+                  className="w-full bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-xl py-4 pl-12 pr-4 focus:outline-none focus:border-indigo-500 transition-all text-[var(--text-primary)]"
                 />
                 {errors.email && <p className="mt-1 text-xs text-red-500">{errors.email.message}</p>}
               </div>
@@ -113,8 +119,8 @@ export default function Register() {
                 <input 
                   {...register('password')}
                   type="password" 
-                  placeholder="Şifre"
-                  className="w-full bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-xl py-4 pl-12 pr-4 focus:outline-none focus:border-indigo-500 transition-all"
+                  placeholder="Şifre (en az 6 karakter)"
+                  className="w-full bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-xl py-4 pl-12 pr-4 focus:outline-none focus:border-indigo-500 transition-all text-[var(--text-primary)]"
                 />
                 {errors.password && <p className="mt-1 text-xs text-red-500">{errors.password.message}</p>}
               </div>
@@ -124,14 +130,14 @@ export default function Register() {
                   {...register('referralCode')}
                   type="text" 
                   placeholder="Referans Kodu (Opsiyonel)"
-                  className="w-full bg-transparent border-b border-[var(--border-color)] py-3 px-1 text-sm focus:outline-none focus:border-indigo-500 transition-all"
+                  className="w-full bg-transparent border-b border-[var(--border-color)] py-3 px-1 text-sm focus:outline-none focus:border-indigo-500 transition-all text-[var(--text-primary)]"
                 />
               </div>
 
               <button 
                 type="submit"
                 disabled={isLoading}
-                className="w-full py-4 bg-[var(--gradient-accent)] text-white font-bold rounded-xl flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-[0.98] transition-all shadow-lg shadow-indigo-500/20 disabled:opacity-70"
+                className="w-full py-4 btn-gradient text-white font-bold rounded-xl flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-[0.98] transition-all shadow-lg shadow-indigo-500/20 disabled:opacity-70 disabled:cursor-not-allowed"
               >
                 {isLoading ? 'Kaydediliyor...' : 'Kayıt Ol'} <ArrowRight size={20} />
               </button>
@@ -146,13 +152,19 @@ export default function Register() {
             <CheckCircle2 size={64} className="text-green-500 mx-auto mb-6" />
             <h2 className="text-2xl font-black mb-4">E-postanı Doğrula</h2>
             <p className="text-[var(--text-secondary)] mb-8">
-              {tempEmail} adresine bir doğrulama kodu gönderdik.
+              <span className="font-bold text-[var(--text-primary)]">{tempEmail}</span> adresine bir doğrulama kodu gönderdik.
             </p>
             
             {mockCode && (
-                <div className="mb-6 p-3 bg-indigo-500/10 rounded-lg text-indigo-400 text-xs font-mono">
-                    Test Kodu: {mockCode}
-                </div>
+              <div className="mb-6 p-3 bg-indigo-500/10 rounded-lg text-indigo-400 text-xs font-mono">
+                Test Kodu: {mockCode}
+              </div>
+            )}
+
+            {error && (
+              <div className="mb-6 p-4 bg-red-500/10 border border-red-500/20 text-red-500 text-sm rounded-xl">
+                {error}
+              </div>
             )}
 
             <div className="flex gap-2 justify-center mb-8">
@@ -160,25 +172,25 @@ export default function Register() {
                 type="text" 
                 maxLength={6}
                 value={verifyCode}
-                onChange={(e) => setVerifyCode(e.target.value)}
+                onChange={(e) => setVerifyCode(e.target.value.replace(/\D/g, ''))}
                 placeholder="000000"
-                className="w-full max-w-[200px] text-center text-3xl font-black tracking-[0.5em] bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-xl py-4 focus:outline-none focus:border-indigo-500"
+                className="w-full max-w-[200px] text-center text-3xl font-black tracking-[0.5em] bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-xl py-4 focus:outline-none focus:border-indigo-500 text-[var(--text-primary)]"
               />
             </div>
 
             <button 
               onClick={handleVerify}
               disabled={isLoading || verifyCode.length !== 6}
-              className="w-full py-4 bg-white text-black font-bold rounded-xl flex items-center justify-center gap-2 hover:bg-gray-100 transition-all disabled:opacity-50"
+              className="w-full py-4 btn-gradient text-white font-bold rounded-xl flex items-center justify-center gap-2 hover:scale-[1.02] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isLoading ? 'Doğrulanıyor...' : 'Doğrula ve Başla'}
             </button>
             
             <button 
-                onClick={() => setStep('form')}
-                className="mt-6 text-sm text-[var(--text-secondary)] hover:text-white"
+              onClick={() => { setStep('form'); setError(null); }}
+              className="mt-6 text-sm text-[var(--text-secondary)] hover:text-indigo-500 transition-colors"
             >
-                Bilgileri Düzenle
+              ← Bilgileri Düzenle
             </button>
           </div>
         )}
