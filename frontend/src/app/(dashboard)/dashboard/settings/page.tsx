@@ -58,13 +58,13 @@ export default function SettingsPage() {
 
       {/* Avatar */}
       <div className="bg-[var(--card-bg)] border border-[var(--border-color)] rounded-3xl p-6 flex items-center gap-6">
-        <div className="w-20 h-20 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-3xl font-black">
+        <div className="w-20 h-20 rounded-full bg-[var(--accent-primary)]/10 text-[var(--accent-primary)] border border-[var(--accent-primary)]/15 flex items-center justify-center text-3xl font-black">
           {user?.name?.charAt(0).toUpperCase()}
         </div>
         <div>
           <p className="font-bold text-lg">{user?.name}</p>
           <p className="text-[var(--text-secondary)] text-sm">{user?.email}</p>
-          <p className="text-xs mt-1 text-indigo-400 font-medium">Ref: {user?.refCode}</p>
+          <p className="text-xs mt-1 text-[var(--accent-primary)] font-medium">Ref: {user?.refCode}</p>
         </div>
       </div>
 
@@ -92,7 +92,7 @@ export default function SettingsPage() {
               {...register('name')}
               type="text"
               placeholder="Ad Soyad"
-              className="w-full bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-xl py-3.5 pl-12 pr-4 focus:outline-none focus:border-indigo-500 transition-all text-[var(--text-primary)]"
+              className="w-full bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-xl py-3.5 pl-12 pr-4 focus:outline-none focus:border-[var(--accent-primary)]/50 focus:ring-1 focus:ring-[var(--accent-primary)]/15 transition-all text-[var(--text-primary)] placeholder:text-[var(--text-muted)]"
             />
             {errors.name && <p className="mt-1 text-xs text-red-500">{errors.name.message}</p>}
           </div>
@@ -103,7 +103,7 @@ export default function SettingsPage() {
               {...register('phone')}
               type="tel"
               placeholder="Telefon Numarası"
-              className="w-full bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-xl py-3.5 pl-12 pr-4 focus:outline-none focus:border-indigo-500 transition-all text-[var(--text-primary)]"
+              className="w-full bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-xl py-3.5 pl-12 pr-4 focus:outline-none focus:border-[var(--accent-primary)]/50 focus:ring-1 focus:ring-[var(--accent-primary)]/15 transition-all text-[var(--text-primary)] placeholder:text-[var(--text-muted)]"
             />
           </div>
 
@@ -113,7 +113,7 @@ export default function SettingsPage() {
               {...register('profession')}
               type="text"
               placeholder="Meslek / Uzmanlık Alanı"
-              className="w-full bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-xl py-3.5 pl-12 pr-4 focus:outline-none focus:border-indigo-500 transition-all text-[var(--text-primary)]"
+              className="w-full bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-xl py-3.5 pl-12 pr-4 focus:outline-none focus:border-[var(--accent-primary)]/50 focus:ring-1 focus:ring-[var(--accent-primary)]/15 transition-all text-[var(--text-primary)] placeholder:text-[var(--text-muted)]"
             />
           </div>
 
@@ -123,7 +123,7 @@ export default function SettingsPage() {
               {...register('city')}
               type="text"
               placeholder="Şehir"
-              className="w-full bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-xl py-3.5 pl-12 pr-4 focus:outline-none focus:border-indigo-500 transition-all text-[var(--text-primary)]"
+              className="w-full bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-xl py-3.5 pl-12 pr-4 focus:outline-none focus:border-[var(--accent-primary)]/50 focus:ring-1 focus:ring-[var(--accent-primary)]/15 transition-all text-[var(--text-primary)] placeholder:text-[var(--text-muted)]"
             />
           </div>
 

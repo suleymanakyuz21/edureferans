@@ -16,9 +16,9 @@ interface Notification {
 }
 
 const typeConfig: Record<string, { icon: typeof Bell; color: string; bg: string }> = {
-  referral: { icon: Users, color: 'text-blue-400', bg: 'bg-blue-500/10' },
-  commission: { icon: CreditCard, color: 'text-green-400', bg: 'bg-green-500/10' },
-  payment: { icon: Gift, color: 'text-purple-400', bg: 'bg-purple-500/10' },
+  referral: { icon: Users, color: 'text-[#0ea5e9]', bg: 'bg-[#0ea5e9]/10' },
+  commission: { icon: CreditCard, color: 'text-emerald-400', bg: 'bg-emerald-500/10' },
+  payment: { icon: Gift, color: 'text-[#06b6d4]', bg: 'bg-[#06b6d4]/10' },
   admin: { icon: Shield, color: 'text-orange-400', bg: 'bg-orange-500/10' },
 };
 
@@ -39,10 +39,10 @@ export default function NotificationsPage() {
   const unreadCount = notifications.filter(n => !n.isRead).length;
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-7">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-black mb-2">Bildirimler</h1>
+          <h1 className="text-2xl font-black mb-1 text-[var(--text-primary)]">Bildirimler</h1>
           <p className="text-[var(--text-secondary)]">
             {unreadCount > 0 ? `${unreadCount} okunmamış bildirim` : 'Tüm bildirimler okundu'}
           </p>
@@ -50,7 +50,7 @@ export default function NotificationsPage() {
         {unreadCount > 0 && (
           <button
             onClick={() => markAllRead.mutate()}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl border border-[var(--border-color)] text-sm font-medium hover:bg-[var(--bg-secondary)] transition-all"
+            className="flex items-center gap-2 px-4 py-2 rounded-xl border border-[var(--border-color)] text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--accent-primary)] hover:border-[var(--accent-primary)]/30 transition-all"
           >
             <CheckCheck size={16} />
             Tümünü Oku
@@ -58,10 +58,10 @@ export default function NotificationsPage() {
         )}
       </div>
 
-      <div className="bg-[var(--card-bg)] border border-[var(--border-color)] rounded-3xl divide-y divide-[var(--border-color)] overflow-hidden">
+      <div className="bg-[var(--card-bg)] border border-[var(--border-color)] rounded-2xl divide-y divide-[var(--border-color)] overflow-hidden">
         {isLoading ? (
-          <div className="p-6 space-y-4">
-            {[1,2,3].map(i => <div key={i} className="h-16 bg-[var(--bg-secondary)] rounded-xl animate-pulse" />)}
+          <div className="p-5 space-y-3">
+            {[1,2,3].map(i => <div key={i} className="h-14 skeleton rounded-xl" />)}
           </div>
         ) : notifications.length === 0 ? (
           <div className="text-center py-16">
@@ -80,7 +80,7 @@ export default function NotificationsPage() {
                 transition={{ delay: i * 0.03 }}
                 className={cn(
                   'flex items-start gap-4 p-5 hover:bg-[var(--bg-secondary)] transition-all',
-                  !notif.isRead && 'bg-indigo-500/3'
+                  !notif.isRead && 'bg-[var(--accent-primary)]/3'
                 )}
               >
                 <div className={cn('w-10 h-10 rounded-xl flex items-center justify-center shrink-0', config.bg, config.color)}>
@@ -90,7 +90,7 @@ export default function NotificationsPage() {
                   <div className="flex items-center justify-between gap-2">
                     <p className="text-sm font-bold">{notif.title}</p>
                     {!notif.isRead && (
-                      <span className="w-2 h-2 bg-indigo-500 rounded-full shrink-0" />
+                      <span className="w-2 h-2 bg-[var(--accent-primary)] rounded-full shrink-0 badge-pulse" />
                     )}
                   </div>
                   <p className="text-sm text-[var(--text-secondary)] mt-0.5">{notif.message}</p>

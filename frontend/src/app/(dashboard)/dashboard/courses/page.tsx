@@ -15,10 +15,10 @@ interface Course {
 }
 
 const categoryColors: Record<string, string> = {
-  'Yazılım': 'text-yellow-500 bg-yellow-500/10',
-  'Pazarlama': 'text-blue-500 bg-blue-500/10',
-  'Tasarım': 'text-purple-500 bg-purple-500/10',
-  'Kişisel Gelişim': 'text-green-500 bg-green-500/10',
+  'Yazılım': 'text-yellow-400 bg-yellow-500/10',
+  'Pazarlama': 'text-[#0ea5e9] bg-[#0ea5e9]/10',
+  'Tasarım': 'text-[#06b6d4] bg-[#06b6d4]/10',
+  'Kişisel Gelişim': 'text-emerald-400 bg-emerald-500/10',
 };
 
 export default function CoursesPage() {
@@ -30,9 +30,9 @@ export default function CoursesPage() {
   const courses = data?.data ?? [];
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-7">
       <div>
-        <h1 className="text-3xl font-black mb-2">Kurslar</h1>
+        <h1 className="text-2xl font-black mb-1 text-[var(--text-primary)]">Kurslar</h1>
         <p className="text-[var(--text-secondary)]">Eğitim içeriklerini keşfet ve öğrenmeye başla.</p>
       </div>
 
@@ -56,14 +56,14 @@ export default function CoursesPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.05 }}
-              className="bg-[var(--card-bg)] border border-[var(--border-color)] rounded-3xl overflow-hidden hover:border-indigo-500/30 transition-all group cursor-pointer"
+              className="bg-[var(--card-bg)] border border-[var(--border-color)] rounded-2xl overflow-hidden hover:border-[var(--accent-primary)]/30 hover:shadow-[0_0_20px_rgba(14,165,233,0.06)] transition-all group cursor-pointer"
             >
-              <div className="h-36 bg-indigo-500/5 flex items-center justify-center group-hover:bg-indigo-500/10 transition-all">
-                <PlayCircle size={48} className="text-indigo-500/50 group-hover:text-indigo-500 transition-all group-hover:scale-110" />
+              <div className="h-36 bg-[var(--accent-primary)]/5 flex items-center justify-center group-hover:bg-[var(--accent-primary)]/10 transition-all">
+                <PlayCircle size={44} className="text-[var(--accent-primary)]/40 group-hover:text-[var(--accent-primary)] transition-all group-hover:scale-110" />
               </div>
               <div className="p-5">
                 <div className="flex items-center gap-2 mb-3">
-                  <span className={`text-xs px-2 py-1 rounded-full font-bold flex items-center gap-1 ${categoryColors[course.category] || 'text-indigo-500 bg-indigo-500/10'}`}>
+                  <span className={`text-xs px-2.5 py-1 rounded-full font-semibold flex items-center gap-1 ${categoryColors[course.category] || 'text-[var(--accent-primary)] bg-[var(--accent-primary)]/10'}`}>
                     <Tag size={10} />
                     {course.category}
                   </span>

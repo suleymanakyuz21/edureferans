@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { motion } from 'framer-motion';
-import { User, Mail, Lock, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { User, Mail, Lock, ArrowRight, CheckCircle2, Zap } from 'lucide-react';
 import Link from 'next/link';
 import api from '@/lib/api';
 import { useRouter } from 'next/navigation';
@@ -30,7 +30,11 @@ export default function Register() {
   const router = useRouter();
   const { setAuth } = useAuthStore();
 
-  const { register, handleSubmit, formState: { errors } } = useForm<RegisterValues>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<RegisterValues>({
     resolver: zodResolver(registerSchema),
   });
 
@@ -68,131 +72,164 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen pt-32 pb-20 flex items-center justify-center px-6">
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_50%_50%,rgba(99,102,241,0.05),transparent)]" />
-      
-      <motion.div 
+    <div className="min-h-screen flex items-center justify-center px-6 py-20 relative overflow-hidden">
+      {/* Background */}
+      <div className="absolute inset-0 -z-10">
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#0ea5e9]/6 blur-[120px] rounded-full" />
+        <div className="absolute bottom-0 left-0 w-80 h-80 bg-[#06b6d4]/5 blur-[100px] rounded-full" />
+        <div className="absolute inset-0 opacity-[0.015] bg-[linear-gradient(rgba(14,165,233,1)_1px,transparent_1px),linear-gradient(90deg,rgba(14,165,233,1)_1px,transparent_1px)] bg-[size:64px_64px]" />
+      </div>
+
+      <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="w-full max-w-md bg-[var(--card-bg)] border border-[var(--border-color)] rounded-[2rem] p-8 md:p-10 shadow-2xl relative overflow-hidden"
+        transition={{ duration: 0.5 }}
+        className="w-full max-w-md"
       >
-        <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/5 blur-3xl -z-10" />
-        
-        {step === 'form' ? (
-          <>
-            <div className="text-center mb-10">
-              <h1 className="text-3xl font-black mb-3">Aramıza Katıl 🚀</h1>
-              <p className="text-[var(--text-secondary)]">Geleceğin eğitim platformunda yerini al.</p>
+        {/* Header */}
+        <div className="text-center mb-8">
+          <Link href="/" className="inline-flex items-center gap-2 mb-8 group">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#0ea5e9] to-[#06b6d4] flex items-center justify-center shadow-[0_0_20px_rgba(14,165,233,0.3)] group-hover:shadow-[0_0_30px_rgba(14,165,233,0.45)] transition-all">
+              <Zap size={16} className="text-white" fill="white" />
             </div>
+            <span className="text-lg font-extrabold tracking-tight text-[var(--text-primary)]">
+              EDU<span className="text-gradient">REFERANS</span>
+            </span>
+          </Link>
+          {step === 'form' && (
+            <>
+              <h1 className="text-3xl font-black mb-2 text-[var(--text-primary)]">Aramıza Katıl 🚀</h1>
+              <p className="text-[var(--text-secondary)] text-sm">Geleceğin eğitim platformunda yerini al.</p>
+            </>
+          )}
+        </div>
 
-            {error && (
-              <div className="mb-6 p-4 bg-red-500/10 border border-red-500/20 text-red-500 text-sm rounded-xl">
-                {error}
-              </div>
-            )}
+        <div className="bg-[var(--card-bg)] border border-[var(--border-color)] rounded-2xl p-7 shadow-[var(--shadow-card)]">
+          {step === 'form' ? (
+            <>
+              {error && (
+                <div className="mb-5 p-3.5 bg-red-500/8 border border-red-500/20 text-red-400 text-sm rounded-xl">
+                  {error}
+                </div>
+              )}
 
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-              <div className="relative">
-                <User className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--text-secondary)]" size={18} />
-                <input 
-                  {...register('name')}
-                  type="text" 
-                  placeholder="Ad Soyad"
-                  className="w-full bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-xl py-4 pl-12 pr-4 focus:outline-none focus:border-indigo-500 transition-all text-[var(--text-primary)]"
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                <div className="relative">
+                  <User className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--text-muted)]" size={16} />
+                  <input
+                    {...register('name')}
+                    id="register-name"
+                    type="text"
+                    placeholder="Ad Soyad"
+                    className="w-full bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-xl py-3.5 pl-11 pr-4 text-sm focus:outline-none focus:border-[var(--accent-primary)]/50 focus:ring-1 focus:ring-[var(--accent-primary)]/15 transition-all text-[var(--text-primary)] placeholder:text-[var(--text-muted)]"
+                  />
+                  {errors.name && <p className="mt-1 text-xs text-red-400">{errors.name.message}</p>}
+                </div>
+
+                <div className="relative">
+                  <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--text-muted)]" size={16} />
+                  <input
+                    {...register('email')}
+                    id="register-email"
+                    type="email"
+                    placeholder="E-posta"
+                    className="w-full bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-xl py-3.5 pl-11 pr-4 text-sm focus:outline-none focus:border-[var(--accent-primary)]/50 focus:ring-1 focus:ring-[var(--accent-primary)]/15 transition-all text-[var(--text-primary)] placeholder:text-[var(--text-muted)]"
+                  />
+                  {errors.email && <p className="mt-1 text-xs text-red-400">{errors.email.message}</p>}
+                </div>
+
+                <div className="relative">
+                  <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--text-muted)]" size={16} />
+                  <input
+                    {...register('password')}
+                    id="register-password"
+                    type="password"
+                    placeholder="Şifre (en az 6 karakter)"
+                    className="w-full bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-xl py-3.5 pl-11 pr-4 text-sm focus:outline-none focus:border-[var(--accent-primary)]/50 focus:ring-1 focus:ring-[var(--accent-primary)]/15 transition-all text-[var(--text-primary)] placeholder:text-[var(--text-muted)]"
+                  />
+                  {errors.password && <p className="mt-1 text-xs text-red-400">{errors.password.message}</p>}
+                </div>
+
+                <div className="relative">
+                  <input
+                    {...register('referralCode')}
+                    id="register-ref"
+                    type="text"
+                    placeholder="Referans Kodu (Opsiyonel)"
+                    className="w-full bg-transparent border-b border-[var(--border-color)] py-3 px-1 text-sm focus:outline-none focus:border-[var(--accent-primary)]/50 transition-all text-[var(--text-primary)] placeholder:text-[var(--text-muted)]"
+                  />
+                </div>
+
+                <button
+                  id="register-submit"
+                  type="submit"
+                  disabled={isLoading}
+                  className="w-full py-3.5 btn-gradient text-white font-semibold rounded-xl flex items-center justify-center gap-2 group disabled:opacity-60 disabled:cursor-not-allowed"
+                >
+                  {isLoading ? 'Kaydediliyor...' : 'Kayıt Ol'}
+                  {!isLoading && <ArrowRight size={16} className="group-hover:translate-x-0.5 transition-transform" />}
+                </button>
+              </form>
+            </>
+          ) : (
+            <div className="text-center">
+              <CheckCircle2 size={52} className="text-emerald-400 mx-auto mb-5" />
+              <h2 className="text-2xl font-black mb-3 text-[var(--text-primary)]">E-postanı Doğrula</h2>
+              <p className="text-[var(--text-secondary)] text-sm mb-6">
+                <span className="font-semibold text-[var(--text-primary)]">{tempEmail}</span> adresine bir doğrulama kodu gönderdik.
+              </p>
+
+              {mockCode && (
+                <div className="mb-5 p-3 bg-[var(--accent-primary)]/8 rounded-xl text-[var(--accent-primary)] text-xs font-mono border border-[var(--accent-primary)]/15">
+                  Test Kodu: <span className="font-bold">{mockCode}</span>
+                </div>
+              )}
+
+              {error && (
+                <div className="mb-5 p-3.5 bg-red-500/8 border border-red-500/20 text-red-400 text-sm rounded-xl">
+                  {error}
+                </div>
+              )}
+
+              <div className="flex justify-center mb-6">
+                <input
+                  id="verify-code"
+                  type="text"
+                  maxLength={6}
+                  value={verifyCode}
+                  onChange={(e) => setVerifyCode(e.target.value.replace(/\D/g, ''))}
+                  placeholder="000000"
+                  className="w-full max-w-[180px] text-center text-3xl font-black tracking-[0.4em] bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-xl py-4 focus:outline-none focus:border-[var(--accent-primary)]/50 focus:ring-1 focus:ring-[var(--accent-primary)]/15 text-[var(--text-primary)] transition-all"
                 />
-                {errors.name && <p className="mt-1 text-xs text-red-500">{errors.name.message}</p>}
               </div>
 
-              <div className="relative">
-                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--text-secondary)]" size={18} />
-                <input 
-                  {...register('email')}
-                  type="email" 
-                  placeholder="E-posta"
-                  className="w-full bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-xl py-4 pl-12 pr-4 focus:outline-none focus:border-indigo-500 transition-all text-[var(--text-primary)]"
-                />
-                {errors.email && <p className="mt-1 text-xs text-red-500">{errors.email.message}</p>}
-              </div>
-
-              <div className="relative">
-                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--text-secondary)]" size={18} />
-                <input 
-                  {...register('password')}
-                  type="password" 
-                  placeholder="Şifre (en az 6 karakter)"
-                  className="w-full bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-xl py-4 pl-12 pr-4 focus:outline-none focus:border-indigo-500 transition-all text-[var(--text-primary)]"
-                />
-                {errors.password && <p className="mt-1 text-xs text-red-500">{errors.password.message}</p>}
-              </div>
-
-              <div className="relative pt-2">
-                <input 
-                  {...register('referralCode')}
-                  type="text" 
-                  placeholder="Referans Kodu (Opsiyonel)"
-                  className="w-full bg-transparent border-b border-[var(--border-color)] py-3 px-1 text-sm focus:outline-none focus:border-indigo-500 transition-all text-[var(--text-primary)]"
-                />
-              </div>
-
-              <button 
-                type="submit"
-                disabled={isLoading}
-                className="w-full py-4 btn-gradient text-white font-bold rounded-xl flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-[0.98] transition-all shadow-lg shadow-indigo-500/20 disabled:opacity-70 disabled:cursor-not-allowed"
+              <button
+                id="verify-submit"
+                onClick={handleVerify}
+                disabled={isLoading || verifyCode.length !== 6}
+                className="w-full py-3.5 btn-gradient text-white font-semibold rounded-xl flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {isLoading ? 'Kaydediliyor...' : 'Kayıt Ol'} <ArrowRight size={20} />
+                {isLoading ? 'Doğrulanıyor...' : 'Doğrula ve Başla'}
+                {!isLoading && <ArrowRight size={16} className="group-hover:translate-x-0.5 transition-transform" />}
               </button>
-            </form>
 
-            <p className="mt-8 text-center text-sm text-[var(--text-secondary)]">
-              Zaten hesabın var mı? <Link href="/login" className="text-indigo-500 font-bold hover:underline">Giriş Yap</Link>
-            </p>
-          </>
-        ) : (
-          <div className="text-center">
-            <CheckCircle2 size={64} className="text-green-500 mx-auto mb-6" />
-            <h2 className="text-2xl font-black mb-4">E-postanı Doğrula</h2>
-            <p className="text-[var(--text-secondary)] mb-8">
-              <span className="font-bold text-[var(--text-primary)]">{tempEmail}</span> adresine bir doğrulama kodu gönderdik.
-            </p>
-            
-            {mockCode && (
-              <div className="mb-6 p-3 bg-indigo-500/10 rounded-lg text-indigo-400 text-xs font-mono">
-                Test Kodu: {mockCode}
-              </div>
-            )}
-
-            {error && (
-              <div className="mb-6 p-4 bg-red-500/10 border border-red-500/20 text-red-500 text-sm rounded-xl">
-                {error}
-              </div>
-            )}
-
-            <div className="flex gap-2 justify-center mb-8">
-              <input 
-                type="text" 
-                maxLength={6}
-                value={verifyCode}
-                onChange={(e) => setVerifyCode(e.target.value.replace(/\D/g, ''))}
-                placeholder="000000"
-                className="w-full max-w-[200px] text-center text-3xl font-black tracking-[0.5em] bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-xl py-4 focus:outline-none focus:border-indigo-500 text-[var(--text-primary)]"
-              />
+              <button
+                onClick={() => { setStep('form'); setError(null); }}
+                className="mt-5 text-xs text-[var(--text-muted)] hover:text-[var(--accent-primary)] transition-colors"
+              >
+                ← Bilgileri Düzenle
+              </button>
             </div>
+          )}
+        </div>
 
-            <button 
-              onClick={handleVerify}
-              disabled={isLoading || verifyCode.length !== 6}
-              className="w-full py-4 btn-gradient text-white font-bold rounded-xl flex items-center justify-center gap-2 hover:scale-[1.02] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {isLoading ? 'Doğrulanıyor...' : 'Doğrula ve Başla'}
-            </button>
-            
-            <button 
-              onClick={() => { setStep('form'); setError(null); }}
-              className="mt-6 text-sm text-[var(--text-secondary)] hover:text-indigo-500 transition-colors"
-            >
-              ← Bilgileri Düzenle
-            </button>
-          </div>
+        {step === 'form' && (
+          <p className="mt-6 text-center text-sm text-[var(--text-muted)]">
+            Zaten hesabın var mı?{' '}
+            <Link href="/login" className="text-[var(--accent-primary)] font-semibold hover:underline">
+              Giriş Yap
+            </Link>
+          </p>
         )}
       </motion.div>
     </div>
