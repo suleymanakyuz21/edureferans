@@ -79,10 +79,6 @@ export default function Home() {
                 Ücretsiz Kayıt Ol
                 <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
               </Link>
-              <button className="px-8 py-4 rounded-xl btn-glass text-[var(--text-primary)] font-semibold text-base flex items-center gap-2 group">
-                <Play size={18} className="text-[var(--accent-primary)] group-hover:scale-110 transition-transform" />
-                Sistemi Keşfet
-              </button>
             </div>
           </motion.div>
 

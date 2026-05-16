@@ -35,9 +35,8 @@ const Navbar = () => {
   const navLinks = [
     { name: 'Ana Sayfa', href: '/' },
     { name: 'Kategoriler', href: '#categories' },
-    { name: 'Kurslar', href: '#courses' },
     { name: 'Referans Sistemi', href: '#referral' },
-    { name: 'SSS', href: '#faq' },
+    { name: 'SSS', href: '#footer' },
   ];
 
   return (

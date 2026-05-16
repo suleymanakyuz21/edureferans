@@ -4,7 +4,7 @@ import { Globe, MessageSquare, Monitor, Info, Mail, Zap } from 'lucide-react';
 
 const Footer = () => {
   return (
-    <footer className="bg-[var(--bg-secondary)] border-t border-[var(--border-color)] pt-20 pb-10">
+    <footer id="footer" className="bg-[var(--bg-secondary)] border-t border-[var(--border-color)] pt-20 pb-10">
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
           {/* Brand */}
@@ -36,10 +36,8 @@ const Footer = () => {
           <div>
             <h4 className="font-bold mb-5 text-[var(--text-primary)] text-sm uppercase tracking-widest">Platform</h4>
             <ul className="space-y-3 text-[var(--text-secondary)] text-sm">
-              <li><Link href="#courses" className="hover:text-[var(--accent-primary)] transition-colors">Tüm Kurslar</Link></li>
               <li><Link href="#categories" className="hover:text-[var(--accent-primary)] transition-colors">Kategoriler</Link></li>
               <li><Link href="#referral" className="hover:text-[var(--accent-primary)] transition-colors">Referans Sistemi</Link></li>
-              <li><Link href="#" className="hover:text-[var(--accent-primary)] transition-colors">Eğitmen Ol</Link></li>
             </ul>
           </div>
 
