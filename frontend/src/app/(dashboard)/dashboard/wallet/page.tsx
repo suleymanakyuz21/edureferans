@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Wallet, TrendingUp, ArrowDownRight, Clock, ArrowUpRight } from 'lucide-react';
 import api from '@/lib/api';
 import { useAuthStore } from '@/store/useAuthStore';
+import PremiumLock from '@/components/shared/PremiumLock';
 
 export default function WalletPage() {
   const { user } = useAuthStore();
@@ -21,6 +22,21 @@ export default function WalletPage() {
 
   const balance = data?.data.balance ?? user?.balance ?? 0;
   const commissions = data?.data.commissions ?? [];
+
+  if (!user?.isPremium) {
+    return (
+      <div className="space-y-7">
+        <div>
+          <h1 className="text-2xl font-black mb-1 text-[var(--text-primary)]">Cüzdanım</h1>
+          <p className="text-sm text-[var(--text-secondary)]">Bakiyeni ve işlem geçmişini yönet.</p>
+        </div>
+        <PremiumLock
+          title="Cüzdanınız Kilitli"
+          description="Bakiye hareketlerini görüntülemek ve para çekmek için Pro Üye olmanız gerekmektedir."
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-7">

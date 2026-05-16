@@ -5,6 +5,8 @@ import { useQuery } from '@tanstack/react-query';
 import { Users, TrendingUp, Crown, Clock } from 'lucide-react';
 import api from '@/lib/api';
 import { cn } from '@/lib/utils';
+import { useAuthStore } from '@/store/useAuthStore';
+import PremiumLock from '@/components/shared/PremiumLock';
 
 interface ReferralStats {
   balance: number;
@@ -27,6 +29,22 @@ export default function ReferralsPage() {
   });
 
   const stats = data?.data;
+  const { user } = useAuthStore();
+
+  if (!user?.isPremium) {
+    return (
+      <div className="space-y-7">
+        <div>
+          <h1 className="text-2xl font-black mb-1 text-[var(--text-primary)]">Referanslarım</h1>
+          <p className="text-sm text-[var(--text-secondary)]">Ağını izle ve komisyon geçmişini takip et.</p>
+        </div>
+        <PremiumLock
+          title="Referans Ağınız Kilitli"
+          description="Referans kodunuzu görüntülemek ve ağınızdan kazanç sağlamak için Pro Üye olmalısınız."
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-7">

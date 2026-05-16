@@ -16,6 +16,7 @@ import {
 import { useAuthStore } from '@/store/useAuthStore';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
+import PremiumLock from '@/components/shared/PremiumLock';
 
 export default function DashboardPage() {
   const { user } = useAuthStore();
@@ -115,47 +116,56 @@ export default function DashboardPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Referral Link Card */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.35 }}
-          className="lg:col-span-2 p-7 rounded-2xl text-white relative overflow-hidden shadow-[0_0_60px_rgba(14,165,233,0.12)]"
-          style={{ background: 'linear-gradient(135deg, #0c2340 0%, #071e36 50%, #0b1120 100%)' }}
-        >
-          {/* Glow */}
-          <div className="absolute top-0 right-0 w-56 h-56 bg-[#0ea5e9]/12 blur-[80px] rounded-full translate-x-1/2 -translate-y-1/2 pointer-events-none" />
-          <div className="absolute bottom-0 left-0 w-40 h-40 bg-[#06b6d4]/8 blur-[60px] rounded-full pointer-events-none" />
-          <div className="absolute inset-0 opacity-[0.03] bg-[radial-gradient(circle_at_2px_2px,white_1px,transparent_0)] bg-[size:24px_24px]" />
+        {/* Referral Link Card or Premium Lock */}
+        {user?.isPremium ? (
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.35 }}
+            className="lg:col-span-2 p-7 rounded-2xl text-white relative overflow-hidden shadow-[0_0_60px_rgba(14,165,233,0.12)]"
+            style={{ background: 'linear-gradient(135deg, #0c2340 0%, #071e36 50%, #0b1120 100%)' }}
+          >
+            {/* Glow */}
+            <div className="absolute top-0 right-0 w-56 h-56 bg-[#0ea5e9]/12 blur-[80px] rounded-full translate-x-1/2 -translate-y-1/2 pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-40 h-40 bg-[#06b6d4]/8 blur-[60px] rounded-full pointer-events-none" />
+            <div className="absolute inset-0 opacity-[0.03] bg-[radial-gradient(circle_at_2px_2px,white_1px,transparent_0)] bg-[size:24px_24px]" />
 
-          <div className="relative z-10">
-            <h2 className="text-xl font-black mb-2">Ağını Genişlet, Kazancını Artır!</h2>
-            <p className="text-slate-400 text-sm mb-6 max-w-md">
-              Referans linkini paylaşarak her yeni üyeden komisyon kazanmaya devam et.
-            </p>
+            <div className="relative z-10">
+              <h2 className="text-xl font-black mb-2">Ağını Genişlet, Kazancını Artır!</h2>
+              <p className="text-slate-400 text-sm mb-6 max-w-md">
+                Referans linkini paylaşarak her yeni üyeden komisyon kazanmaya devam et.
+              </p>
 
-            <div className="flex gap-2 p-1.5 bg-white/5 backdrop-blur-md rounded-xl border border-white/10">
-              <input
-                type="text"
-                readOnly
-                value={referralLink}
-                className="flex-1 bg-transparent border-none px-3 text-xs font-mono text-white/70 focus:outline-none truncate"
-              />
-              <button
-                onClick={handleCopy}
-                className={cn(
-                  'px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-1.5 shrink-0 transition-all',
-                  copied
-                    ? 'bg-emerald-500 text-white'
-                    : 'bg-gradient-to-r from-[#0ea5e9] to-[#06b6d4] text-white shadow-[0_0_16px_rgba(14,165,233,0.3)]'
-                )}
-              >
-                {copied ? <Check size={13} /> : <Copy size={13} />}
-                {copied ? 'Kopyalandı!' : 'Kopyala'}
-              </button>
+              <div className="flex gap-2 p-1.5 bg-white/5 backdrop-blur-md rounded-xl border border-white/10">
+                <input
+                  type="text"
+                  readOnly
+                  value={referralLink}
+                  className="flex-1 bg-transparent border-none px-3 text-xs font-mono text-white/70 focus:outline-none truncate"
+                />
+                <button
+                  onClick={handleCopy}
+                  className={cn(
+                    'px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-1.5 shrink-0 transition-all',
+                    copied
+                      ? 'bg-emerald-500 text-white'
+                      : 'bg-gradient-to-r from-[#0ea5e9] to-[#06b6d4] text-white shadow-[0_0_16px_rgba(14,165,233,0.3)]'
+                  )}
+                >
+                  {copied ? <Check size={13} /> : <Copy size={13} />}
+                  {copied ? 'Kopyalandı!' : 'Kopyala'}
+                </button>
+              </div>
             </div>
+          </motion.div>
+        ) : (
+          <div className="lg:col-span-2">
+            <PremiumLock
+              title="Referans Ağınız Kilitli"
+              description="Referans kodunuzu görüntülemek ve ağınızdan kazanç sağlamak için Pro Üye olmalısınız."
+            />
           </div>
-        </motion.div>
+        )}
 
         {/* Quick Progress */}
         <motion.div

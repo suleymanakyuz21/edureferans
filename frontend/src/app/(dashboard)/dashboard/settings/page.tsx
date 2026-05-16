@@ -64,7 +64,9 @@ export default function SettingsPage() {
         <div>
           <p className="font-bold text-lg">{user?.name}</p>
           <p className="text-[var(--text-secondary)] text-sm">{user?.email}</p>
-          <p className="text-xs mt-1 text-[var(--accent-primary)] font-medium">Ref: {user?.refCode}</p>
+          {user?.isPremium && (
+            <p className="text-xs mt-1 text-[var(--accent-primary)] font-medium">Ref: {user?.refCode}</p>
+          )}
         </div>
       </div>
 

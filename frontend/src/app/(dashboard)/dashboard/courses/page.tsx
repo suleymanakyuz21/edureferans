@@ -4,6 +4,8 @@ import { motion } from 'framer-motion';
 import { useQuery } from '@tanstack/react-query';
 import { PlayCircle, BookOpen, Tag } from 'lucide-react';
 import api from '@/lib/api';
+import { useAuthStore } from '@/store/useAuthStore';
+import { useRouter } from 'next/navigation';
 
 interface Course {
   id: number;
@@ -22,6 +24,9 @@ const categoryColors: Record<string, string> = {
 };
 
 export default function CoursesPage() {
+  const { user } = useAuthStore();
+  const router = useRouter();
+
   const { data, isLoading } = useQuery<{ data: Course[] }>({
     queryKey: ['courses'],
     queryFn: () => api.get('/courses').then(r => r.data),
@@ -56,6 +61,13 @@ export default function CoursesPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.05 }}
+              onClick={() => {
+                if (!user?.isPremium) {
+                  router.push('/dashboard/subscribe');
+                } else {
+                  alert('Video oynatıcı yükleniyor...');
+                }
+              }}
               className="bg-[var(--card-bg)] border border-[var(--border-color)] rounded-2xl overflow-hidden hover:border-[var(--accent-primary)]/30 hover:shadow-[0_0_20px_rgba(14,165,233,0.06)] transition-all group cursor-pointer"
             >
               <div className="h-36 bg-[var(--accent-primary)]/5 flex items-center justify-center group-hover:bg-[var(--accent-primary)]/10 transition-all">
