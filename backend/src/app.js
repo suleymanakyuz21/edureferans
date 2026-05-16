@@ -16,6 +16,7 @@ app.use('/api/auth', require('./routes/auth.routes'));
 app.use('/api/user', require('./routes/user.routes'));
 app.use('/api/referral', require('./routes/referral.routes'));
 app.use('/api/content', require('./routes/content.routes'));
+app.use('/api/admin', require('./routes/admin.routes'));
 
 // 404 Handler
 app.use((req, res) => {
