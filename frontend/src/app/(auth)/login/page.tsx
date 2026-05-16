@@ -40,7 +40,11 @@ export default function Login() {
       const { token, user } = response.data.data;
       localStorage.setItem('token', token);
       setAuth(user, token);
-      router.push('/dashboard');
+      if (user.role === 'ADMIN') {
+        router.push('/admin');
+      } else {
+        router.push('/dashboard');
+      }
     } catch (err: unknown) {
       const e = err as { response?: { data?: { message?: string } } };
       setError(e.response?.data?.message || 'Giriş başarısız. Lütfen bilgilerinizi kontrol edin.');
