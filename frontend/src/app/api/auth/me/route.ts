@@ -15,6 +15,7 @@ export async function GET(request: NextRequest) {
         name: true,
         email: true,
         isPremium: true,
+        role: true,
         refCode: true,
         balance: true,
         avatar: true,
