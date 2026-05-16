@@ -6,6 +6,7 @@ export interface User {
   name: string;
   email: string;
   isPremium: boolean;
+  role?: string;
   refCode?: string;
   balance?: number;
   avatar?: string;
