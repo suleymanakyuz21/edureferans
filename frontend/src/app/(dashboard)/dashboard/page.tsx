@@ -61,11 +61,11 @@ export default function DashboardPage() {
     },
   ];
 
-  const referralLink = `https://edureferans.com/register?ref=${user?.refCode || '---'}`;
+  const referralCode = user?.refCode || '---';
 
   const handleCopy = async () => {
     try {
-      await navigator.clipboard.writeText(referralLink);
+      await navigator.clipboard.writeText(referralCode);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
@@ -133,15 +133,15 @@ export default function DashboardPage() {
             <div className="relative z-10">
               <h2 className="text-xl font-black mb-2">Ağını Genişlet, Kazancını Artır!</h2>
               <p className="text-slate-400 text-sm mb-6 max-w-md">
-                Referans linkini paylaşarak her yeni üyeden komisyon kazanmaya devam et.
+                Referans kodunu paylaşarak her yeni üyeden komisyon kazanmaya devam et.
               </p>
 
               <div className="flex gap-2 p-1.5 bg-white/5 backdrop-blur-md rounded-xl border border-white/10">
                 <input
                   type="text"
                   readOnly
-                  value={referralLink}
-                  className="flex-1 bg-transparent border-none px-3 text-xs font-mono text-white/70 focus:outline-none truncate"
+                  value={referralCode}
+                  className="flex-1 bg-transparent border-none px-3 text-sm font-mono font-bold text-white/90 focus:outline-none truncate"
                 />
                 <button
                   onClick={handleCopy}
