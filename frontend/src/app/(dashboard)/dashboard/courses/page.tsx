@@ -63,7 +63,10 @@ export default function CoursesPage() {
               transition={{ delay: i * 0.05 }}
               onClick={() => {
                 if (!user?.isPremium) {
-                  router.push('/dashboard/subscribe');
+                  const checkoutUrl = user?.email 
+                    ? `https://polar.sh/checkout/polar_c_1aPn4oDN6T1ibnZ6ncCtbmsjt4vTJOoiR8Ypg1g7dza?customer_email=${encodeURIComponent(user.email)}`
+                    : 'https://polar.sh/checkout/polar_c_1aPn4oDN6T1ibnZ6ncCtbmsjt4vTJOoiR8Ypg1g7dza';
+                  window.location.href = checkoutUrl;
                 } else {
                   alert('Video oynatıcı yükleniyor...');
                 }

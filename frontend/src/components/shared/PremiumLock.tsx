@@ -1,6 +1,6 @@
 import React from 'react';
 import { Lock, Crown } from 'lucide-react';
-import Link from 'next/link';
+import { useAuthStore } from '@/store/useAuthStore';
 
 interface PremiumLockProps {
   title: string;
@@ -8,6 +8,12 @@ interface PremiumLockProps {
 }
 
 const PremiumLock: React.FC<PremiumLockProps> = ({ title, description }) => {
+  const { user } = useAuthStore();
+  // Append user email to checkout link if available
+  const checkoutUrl = user?.email 
+    ? `https://polar.sh/checkout/polar_c_1aPn4oDN6T1ibnZ6ncCtbmsjt4vTJOoiR8Ypg1g7dza?customer_email=${encodeURIComponent(user.email)}`
+    : 'https://polar.sh/checkout/polar_c_1aPn4oDN6T1ibnZ6ncCtbmsjt4vTJOoiR8Ypg1g7dza';
+
   return (
     <div className="flex flex-col items-center justify-center py-20 px-4 text-center bg-[var(--card-bg)] border border-[var(--border-color)] rounded-2xl relative overflow-hidden">
       {/* Background Glow */}
@@ -21,15 +27,16 @@ const PremiumLock: React.FC<PremiumLockProps> = ({ title, description }) => {
       </div>
       
       <h2 className="text-2xl font-black text-white mb-3">{title}</h2>
-      <p className="text-slate-400 max-w-md mb-8">{description}</p>
+      <p className="text-slate-400 max-w-md mb-2">{description}</p>
+      <p className="text-emerald-400 font-medium mb-8">Pro üye olarak aktif edebilirsiniz.</p>
       
-      <Link
-        href="/dashboard/subscribe"
+      <a
+        href={checkoutUrl}
         className="px-8 py-3.5 bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-400 hover:to-indigo-500 text-white font-bold rounded-xl flex items-center gap-2 shadow-[0_0_20px_rgba(168,85,247,0.3)] transition-all"
       >
         <Crown size={18} />
-        Pro Üye Ol
-      </Link>
+        Pro Ol
+      </a>
     </div>
   );
 };
