@@ -50,8 +50,32 @@ export async function POST(request: NextRequest) {
     const { name, email, password, referralCode } = parsed.data;
 
     const existingUser = await prisma.user.findUnique({ where: { email } });
+
+    // If account exists but not verified yet — resend a fresh OTP instead of erroring
     if (existingUser) {
-      return errorResponse('Bu e-posta adresi zaten kullanılıyor.', 400);
+      if (existingUser.isVerified) {
+        return errorResponse('Bu e-posta adresi zaten kullanılıyor.', 400);
+      }
+
+      const otp = Math.floor(100000 + Math.random() * 900000).toString();
+      const otpExpiresAt = new Date(Date.now() + 15 * 60 * 1000);
+
+      await prisma.user.update({
+        where: { email },
+        data: { verificationCode: otp, verificationCodeExpiresAt: otpExpiresAt },
+      });
+
+      try {
+        await sendVerificationEmail(email, otp);
+      } catch (emailError) {
+        console.error('[REGISTER] Email resend failed:', emailError);
+      }
+
+      return successResponse(
+        { requiresVerification: true, email },
+        'Yeni doğrulama kodu e-postanıza gönderildi.',
+        200
+      );
     }
 
     const hashedPassword = await bcrypt.hash(password, 12);
@@ -74,7 +98,7 @@ export async function POST(request: NextRequest) {
     }
 
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
-    const otpExpiresAt = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes
+    const otpExpiresAt = new Date(Date.now() + 15 * 60 * 1000);
 
     await prisma.user.create({
       data: {
