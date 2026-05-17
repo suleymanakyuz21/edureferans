@@ -1,13 +1,15 @@
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
 const FROM = process.env.RESEND_FROM_EMAIL ?? 'noreply@edureferans.com';
 
 export async function sendVerificationEmail(email: string, code: string): Promise<void> {
-  if (!process.env.RESEND_API_KEY || process.env.RESEND_API_KEY.startsWith('REPLACE_')) {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey || apiKey.startsWith('REPLACE_')) {
     console.log(`\n[DEV] VERIFICATION EMAIL TO: ${email} | CODE: ${code} (15 min)\n`);
     return;
   }
+
+  const resend = new Resend(apiKey);
 
   await resend.emails.send({
     from: FROM,
