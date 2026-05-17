@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { verifyToken } from '@/lib/auth';
 
 const protectedRoutes = ['/dashboard', '/admin'];
-const authRoutes = ['/login', '/register'];
+const authRoutes = ['/login'];
 const adminRoutes = ['/admin'];
 
 export function proxy(request: NextRequest) {
