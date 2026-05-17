@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Minus, Zap, HelpCircle } from 'lucide-react';
 import Link from 'next/link';
@@ -30,10 +30,28 @@ const faqs = [
 
 export default function FAQPage() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
+  const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  const handleToggle = (index: number) => {
+    const isOpening = openIndex !== index;
+    setOpenIndex(isOpening ? index : null);
+
+    if (isOpening) {
+      // Wait for the accordion animation to start so we get accurate bounding client rect
+      setTimeout(() => {
+        const element = itemRefs.current[index];
+        if (element) {
+          const yOffset = -100; // Offset for fixed navbar
+          const y = element.getBoundingClientRect().top + window.scrollY + yOffset;
+          window.scrollTo({ top: y, behavior: 'smooth' });
+        }
+      }, 150);
+    }
+  };
 
   return (
     <div className="min-h-screen pt-24 pb-20 px-6 relative overflow-hidden bg-[var(--bg-primary)]">
@@ -79,11 +97,12 @@ export default function FAQPage() {
             return (
               <div 
                 key={index}
+                ref={(el) => { itemRefs.current[index] = el; }}
                 className={`bg-[var(--card-bg)] border rounded-2xl overflow-hidden transition-all duration-300 ${isOpen ? 'border-[#0ea5e9]/40 shadow-[0_0_30px_rgba(14,165,233,0.1)]' : 'border-[var(--border-color)] hover:border-[var(--border-color-hover)]'}`}
               >
                 <button
                   className="w-full px-6 py-5 flex items-center justify-between text-left focus:outline-none"
-                  onClick={() => setOpenIndex(isOpen ? null : index)}
+                  onClick={() => handleToggle(index)}
                 >
                   <span className={`font-bold text-lg transition-colors ${isOpen ? 'text-[var(--text-primary)]' : 'text-[var(--text-secondary)]'}`}>
                     {faq.question}
