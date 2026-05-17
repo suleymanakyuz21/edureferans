@@ -54,7 +54,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
     const body = await request.json();
     const parsed = updateSchema.safeParse(body);
     if (!parsed.success) {
-      return errorResponse(`Geçersiz alanlar: ${parsed.error.errors[0].message}`, 400);
+      return errorResponse(`Geçersiz alanlar: ${parsed.error.issues[0].message}`, 400);
     }
 
     if (Object.keys(parsed.data).length === 0) {

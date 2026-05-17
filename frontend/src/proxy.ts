@@ -5,7 +5,7 @@ const protectedRoutes = ['/dashboard', '/admin'];
 const authRoutes = ['/login', '/register'];
 const adminRoutes = ['/admin'];
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const token = request.cookies.get('token')?.value;
 

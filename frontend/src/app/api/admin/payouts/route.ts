@@ -55,7 +55,7 @@ export async function PATCH(request: NextRequest) {
     const body = await request.json();
     const parsed = updatePayoutSchema.safeParse(body);
     if (!parsed.success) {
-      return errorResponse(parsed.error.errors[0].message, 400);
+      return errorResponse(parsed.error.issues[0].message, 400);
     }
 
     const { id, status, adminNote } = parsed.data;
