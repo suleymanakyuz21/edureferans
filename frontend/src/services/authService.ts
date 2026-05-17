@@ -1,7 +1,10 @@
-import api from './api';
+import api from '@/lib/api';
 
 export const authService = {
-  register: (data: any) => api.post('/auth/register', data),
-  login: (data: any) => api.post('/auth/login', data),
+  register: (data: { name: string; email: string; password: string; referralCode?: string }) =>
+    api.post('/auth/register', data),
+  login: (data: { email: string; password: string }) => api.post('/auth/login', data),
   verify: (data: { email: string; code: string }) => api.post('/auth/verify', data),
+  logout: () => api.post('/auth/logout'),
+  me: () => api.get('/auth/me'),
 };

@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { motion } from 'framer-motion';
-import { User, Mail, Lock, ArrowRight, CheckCircle2, Zap } from 'lucide-react';
+import { User, Mail, Lock, ArrowRight, Mail as MailIcon, Zap } from 'lucide-react';
 import Link from 'next/link';
 import api from '@/lib/api';
 import { useRouter } from 'next/navigation';
@@ -14,7 +14,7 @@ import { useAuthStore } from '@/store/useAuthStore';
 const registerSchema = z.object({
   name: z.string().min(2, 'İsim en az 2 karakter olmalıdır'),
   email: z.string().email('Geçerli bir e-posta adresi giriniz'),
-  password: z.string().min(6, 'Şifre en az 6 karakter olmalıdır'),
+  password: z.string().min(8, 'Şifre en az 8 karakter olmalıdır'),
   referralCode: z.string().optional(),
 });
 
@@ -25,7 +25,6 @@ export default function Register() {
   const [error, setError] = useState<string | null>(null);
   const [step, setStep] = useState<'form' | 'verify'>('form');
   const [tempEmail, setTempEmail] = useState('');
-  const [mockCode, setMockCode] = useState('');
   const [verifyCode, setVerifyCode] = useState('');
   const router = useRouter();
   const { setAuth } = useAuthStore();
@@ -42,9 +41,8 @@ export default function Register() {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await api.post('/auth/register', data);
+      await api.post('/auth/register', data);
       setTempEmail(data.email);
-      setMockCode(response.data.data.mockCode || '');
       setStep('verify');
     } catch (err: unknown) {
       const e = err as { response?: { data?: { message?: string } } };
@@ -59,9 +57,9 @@ export default function Register() {
     setError(null);
     try {
       const response = await api.post('/auth/verify', { email: tempEmail, code: verifyCode });
-      const { token, user } = response.data.data;
-      localStorage.setItem('token', token);
-      setAuth(user, token);
+      const { user } = response.data.data;
+      // Token set as HttpOnly cookie by server
+      setAuth(user);
       router.push('/dashboard');
     } catch (err: unknown) {
       const e = err as { response?: { data?: { message?: string } } };
@@ -73,7 +71,6 @@ export default function Register() {
 
   return (
     <div className="min-h-screen flex items-center justify-center px-6 py-20 relative overflow-hidden">
-      {/* Background */}
       <div className="absolute inset-0 -z-10">
         <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#0ea5e9]/6 blur-[120px] rounded-full" />
         <div className="absolute bottom-0 left-0 w-80 h-80 bg-[#06b6d4]/5 blur-[100px] rounded-full" />
@@ -86,7 +83,6 @@ export default function Register() {
         transition={{ duration: 0.5 }}
         className="w-full max-w-md"
       >
-        {/* Header */}
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2 mb-8 group">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#0ea5e9] to-[#06b6d4] flex items-center justify-center shadow-[0_0_20px_rgba(14,165,233,0.3)] group-hover:shadow-[0_0_30px_rgba(14,165,233,0.45)] transition-all">
@@ -144,7 +140,7 @@ export default function Register() {
                     {...register('password')}
                     id="register-password"
                     type="password"
-                    placeholder="Şifre (en az 6 karakter)"
+                    placeholder="Şifre (en az 8 karakter)"
                     className="w-full bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-xl py-3.5 pl-11 pr-4 text-sm focus:outline-none focus:border-[var(--accent-primary)]/50 focus:ring-1 focus:ring-[var(--accent-primary)]/15 transition-all text-[var(--text-primary)] placeholder:text-[var(--text-muted)]"
                   />
                   {errors.password && <p className="mt-1 text-xs text-red-400">{errors.password.message}</p>}
@@ -173,17 +169,14 @@ export default function Register() {
             </>
           ) : (
             <div className="text-center">
-              <CheckCircle2 size={52} className="text-emerald-400 mx-auto mb-5" />
+              <div className="w-16 h-16 rounded-2xl bg-[var(--accent-primary)]/10 border border-[var(--accent-primary)]/20 flex items-center justify-center mx-auto mb-5">
+                <MailIcon size={28} className="text-[var(--accent-primary)]" />
+              </div>
               <h2 className="text-2xl font-black mb-3 text-[var(--text-primary)]">E-postanı Doğrula</h2>
               <p className="text-[var(--text-secondary)] text-sm mb-6">
-                <span className="font-semibold text-[var(--text-primary)]">{tempEmail}</span> adresine bir doğrulama kodu gönderdik.
+                <span className="font-semibold text-[var(--text-primary)]">{tempEmail}</span> adresine{' '}
+                6 haneli bir doğrulama kodu gönderdik.
               </p>
-
-              {mockCode && (
-                <div className="mb-5 p-3 bg-[var(--accent-primary)]/8 rounded-xl text-[var(--accent-primary)] text-xs font-mono border border-[var(--accent-primary)]/15">
-                  Test Kodu: <span className="font-bold">{mockCode}</span>
-                </div>
-              )}
 
               {error && (
                 <div className="mb-5 p-3.5 bg-red-500/8 border border-red-500/20 text-red-400 text-sm rounded-xl">

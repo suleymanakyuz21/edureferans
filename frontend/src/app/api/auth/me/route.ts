@@ -15,6 +15,7 @@ export async function GET(request: NextRequest) {
         name: true,
         email: true,
         isPremium: true,
+        isActive: true,
         role: true,
         refCode: true,
         balance: true,
@@ -24,17 +25,14 @@ export async function GET(request: NextRequest) {
         city: true,
         about: true,
         createdAt: true,
-        _count: {
-          select: {
-            referrals: true,
-          },
-        },
+        _count: { select: { referrals: true } },
       },
     });
 
     if (!user) return unauthorizedResponse('Kullanıcı bulunamadı.');
+    if (!user.isActive) return unauthorizedResponse('Hesabınız askıya alınmıştır.');
 
-    return successResponse(user);
+    return successResponse({ ...user, balance: Number(user.balance) });
   } catch (error) {
     console.error('Me error:', error);
     return errorResponse('Sunucu hatası.', 500);

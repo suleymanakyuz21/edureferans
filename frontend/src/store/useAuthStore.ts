@@ -15,11 +15,10 @@ export interface User {
 
 interface AuthState {
   user: User | null;
-  token: string | null;
   isHydrated: boolean;
-  setAuth: (user: User, token: string) => void;
+  setAuth: (user: User) => void;
   updateUser: (updates: Partial<User>) => void;
-  logout: () => void;
+  logout: () => Promise<void>;
   setHydrated: () => void;
 }
 
@@ -27,31 +26,23 @@ export const useAuthStore = create<AuthState>()(
   persist(
     (set) => ({
       user: null,
-      token: null,
       isHydrated: false,
-      setAuth: (user, token) => {
-        set({ user, token });
-        // Also set cookie for middleware SSR access
-        if (typeof document !== 'undefined') {
-          document.cookie = `token=${token}; path=/; max-age=${7 * 24 * 60 * 60}; SameSite=Lax`;
-          localStorage.setItem('token', token);
-        }
-      },
+      setAuth: (user) => set({ user }),
       updateUser: (updates) =>
         set((state) => ({
           user: state.user ? { ...state.user, ...updates } : null,
         })),
-      logout: () => {
-        if (typeof document !== 'undefined') {
-          document.cookie = 'token=; path=/; max-age=0';
-          localStorage.removeItem('token');
-        }
-        set({ user: null, token: null });
+      logout: async () => {
+        // Clear server-side HttpOnly cookie
+        await fetch('/api/auth/logout', { method: 'POST' }).catch(() => {});
+        set({ user: null });
       },
       setHydrated: () => set({ isHydrated: true }),
     }),
     {
-      name: 'auth-storage',
+      name: 'auth-user',
+      // Only persist user display data — auth is handled by HttpOnly cookie
+      partialize: (state) => ({ user: state.user }),
       onRehydrateStorage: () => (state) => {
         state?.setHydrated();
       },

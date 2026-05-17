@@ -1,6 +1,10 @@
 import jwt from 'jsonwebtoken';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'fallback-secret-change-in-production';
+if (!process.env.JWT_SECRET) {
+  throw new Error('JWT_SECRET environment variable is not set');
+}
+
+const JWT_SECRET = process.env.JWT_SECRET;
 
 export interface JWTPayload {
   id: number;
@@ -26,8 +30,23 @@ export function getTokenFromHeader(authHeader: string | null): string | null {
 }
 
 export function getAuthFromRequest(request: Request): JWTPayload | null {
+  // Try Authorization header first (for API clients)
   const authHeader = request.headers.get('authorization');
-  const token = getTokenFromHeader(authHeader);
-  if (!token) return null;
-  return verifyToken(token);
+  const headerToken = getTokenFromHeader(authHeader);
+  if (headerToken) return verifyToken(headerToken);
+
+  // Try HttpOnly cookie (for browser requests)
+  const cookieHeader = request.headers.get('cookie') ?? '';
+  const match = cookieHeader.match(/(?:^|;\s*)token=([^;]+)/);
+  if (match?.[1]) return verifyToken(match[1]);
+
+  return null;
 }
+
+export const COOKIE_OPTIONS = {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === 'production',
+  sameSite: 'strict' as const,
+  maxAge: 7 * 24 * 60 * 60,
+  path: '/',
+};

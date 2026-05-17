@@ -13,12 +13,7 @@ export async function GET(request: NextRequest) {
       select: {
         balance: true,
         referrals: {
-          select: {
-            id: true,
-            name: true,
-            createdAt: true,
-            isPremium: true,
-          },
+          select: { id: true, name: true, createdAt: true, isPremium: true },
         },
         commissionsEarned: {
           select: {
@@ -29,27 +24,26 @@ export async function GET(request: NextRequest) {
             fromUser: { select: { name: true } },
           },
           orderBy: { createdAt: 'desc' },
-          take: 20,
-        },
-        _count: {
-          select: { referrals: true },
+          take: 50,
         },
       },
     });
 
     if (!user) return unauthorizedResponse();
 
-    const level1Count = user.referrals.length;
     const level2Count = await prisma.user.count({
       where: { grandReferredById: auth.id },
     });
 
     return successResponse({
-      balance: user.balance,
-      referralCount: level1Count,
+      balance: Number(user.balance),
+      referralCount: user.referrals.length,
       level2Count,
       referrals: user.referrals,
-      commissions: user.commissionsEarned,
+      commissions: user.commissionsEarned.map((c) => ({
+        ...c,
+        amount: Number(c.amount),
+      })),
     });
   } catch (error) {
     console.error('Referral stats error:', error);

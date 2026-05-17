@@ -43,11 +43,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const [mobileOpen, setMobileOpen] = useState(false);
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
 
-  useEffect(() => {
-    if (!localStorage.getItem('token')) {
-      router.push('/login');
-    }
-  }, [router]);
+  // Auth redirect is handled by middleware — no need for localStorage check here
 
   useEffect(() => {
     const stored = (localStorage.getItem('theme') as 'dark' | 'light') || 'dark';
@@ -66,8 +62,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     document.documentElement.setAttribute('data-theme', next);
   };
 
-  const handleLogout = () => {
-    logout();
+  const handleLogout = async () => {
+    await logout();
     router.push('/');
   };
 

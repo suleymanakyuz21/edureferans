@@ -1,34 +1,64 @@
 import { NextRequest } from 'next/server';
 import bcrypt from 'bcryptjs';
+import { z } from 'zod';
 import { prisma } from '@/lib/prisma';
-import { signToken } from '@/lib/auth';
 import { successResponse, errorResponse } from '@/lib/apiResponse';
+
+// Simple in-memory rate limiter: 3 registrations per hour per IP
+const registerAttempts = new Map<string, { count: number; resetAt: number }>();
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const entry = registerAttempts.get(ip);
+  if (!entry || now > entry.resetAt) {
+    registerAttempts.set(ip, { count: 1, resetAt: now + 60 * 60 * 1000 });
+    return false;
+  }
+  if (entry.count >= 3) return true;
+  entry.count++;
+  return false;
+}
+
+const registerSchema = z.object({
+  name: z.string().min(2).max(100).trim(),
+  email: z.string().email().max(255).toLowerCase().trim(),
+  password: z.string().min(8).max(128),
+  referralCode: z.string().max(20).optional(),
+});
 
 function generateRefCode(name: string): string {
   return name.substring(0, 3).toUpperCase() + Math.random().toString(36).substring(2, 8).toUpperCase();
 }
 
 export async function POST(request: NextRequest) {
-  try {
-    const { name, email, password, referralCode } = await request.json();
+  const ip = request.headers.get('x-forwarded-for')?.split(',')[0] ?? 'unknown';
 
-    if (!name || !email || !password) {
-      return errorResponse('Ad, e-posta ve şifre zorunludur.', 400);
+  if (isRateLimited(ip)) {
+    return errorResponse('Çok fazla kayıt denemesi. Bir süre sonra tekrar deneyin.', 429);
+  }
+
+  try {
+    const body = await request.json();
+    const parsed = registerSchema.safeParse(body);
+
+    if (!parsed.success) {
+      const firstError = parsed.error.errors[0];
+      return errorResponse(firstError.message, 400);
     }
+
+    const { name, email, password, referralCode } = parsed.data;
 
     const existingUser = await prisma.user.findUnique({ where: { email } });
     if (existingUser) {
       return errorResponse('Bu e-posta adresi zaten kullanılıyor.', 400);
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(password, 12);
 
     // Generate unique refCode
     let refCode = generateRefCode(name);
-    let codeExists = await prisma.user.findUnique({ where: { refCode } });
-    while (codeExists) {
+    while (await prisma.user.findUnique({ where: { refCode } })) {
       refCode = generateRefCode(name);
-      codeExists = await prisma.user.findUnique({ where: { refCode } });
     }
 
     let referredById: number | null = null;
@@ -36,15 +66,16 @@ export async function POST(request: NextRequest) {
 
     if (referralCode) {
       const referrer = await prisma.user.findUnique({ where: { refCode: referralCode } });
-      if (referrer) {
+      if (referrer && referrer.isActive && referrer.isVerified) {
         referredById = referrer.id;
         grandReferredById = referrer.referredById;
       }
     }
 
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    const otpExpiresAt = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes
 
-    const newUser = await prisma.user.create({
+    await prisma.user.create({
       data: {
         name,
         email,
@@ -54,16 +85,19 @@ export async function POST(request: NextRequest) {
         grandReferredById,
         isVerified: false,
         verificationCode: otp,
+        verificationCodeExpiresAt: otpExpiresAt,
       },
     });
 
+    // Log to console for dev — replace with Resend/email in production
     console.log(`\n========================================`);
-    console.log(`MOCK EMAIL TO: ${email}`);
-    console.log(`VERIFICATION CODE: ${otp}`);
+    console.log(`[DEV] VERIFICATION EMAIL TO: ${email}`);
+    console.log(`[DEV] CODE: ${otp} (expires in 15 minutes)`);
     console.log(`========================================\n`);
 
+    // NOTE: Do NOT return the OTP in the response — it defeats email verification
     return successResponse(
-      { requiresVerification: true, email: newUser.email, mockCode: otp },
+      { requiresVerification: true, email },
       'Doğrulama kodu e-postanıza gönderildi.',
       201
     );

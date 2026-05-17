@@ -1,19 +1,20 @@
 const authService = require('../services/auth.service');
 const { successResponse, errorResponse } = require('../utils/apiResponse');
 
-const register = async (req, res, next) => {
+const register = async (req, res) => {
   try {
-    const { user, otp } = await authService.register(req.body);
+    const { user } = await authService.register(req.body);
+    // OTP is logged server-side only — never returned to client
     return successResponse(res, 201, 'Doğrulama kodu e-postanıza gönderildi.', {
+      requiresVerification: true,
       email: user.email,
-      mockCode: otp,
     });
   } catch (error) {
     return errorResponse(res, 400, error.message);
   }
 };
 
-const verifyEmail = async (req, res, next) => {
+const verifyEmail = async (req, res) => {
   try {
     const { email, code } = req.body;
     const { token, user } = await authService.verifyEmail(email, code);
@@ -23,7 +24,7 @@ const verifyEmail = async (req, res, next) => {
   }
 };
 
-const login = async (req, res, next) => {
+const login = async (req, res) => {
   try {
     const { email, password } = req.body;
     const ip = req.ip;
@@ -35,8 +36,4 @@ const login = async (req, res, next) => {
   }
 };
 
-module.exports = {
-  register,
-  verifyEmail,
-  login,
-};
+module.exports = { register, verifyEmail, login };

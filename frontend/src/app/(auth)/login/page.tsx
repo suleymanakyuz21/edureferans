@@ -37,9 +37,9 @@ export default function Login() {
     setError(null);
     try {
       const response = await api.post('/auth/login', data);
-      const { token, user } = response.data.data;
-      localStorage.setItem('token', token);
-      setAuth(user, token);
+      const { user } = response.data.data;
+      // Token is set as HttpOnly cookie by the server — no localStorage needed
+      setAuth(user);
       if (user.role === 'ADMIN') {
         router.push('/admin');
       } else {
@@ -55,7 +55,6 @@ export default function Login() {
 
   return (
     <div className="min-h-screen flex items-center justify-center px-6 py-20 relative overflow-hidden">
-      {/* Background */}
       <div className="absolute inset-0 -z-10">
         <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#0ea5e9]/6 blur-[120px] rounded-full" />
         <div className="absolute bottom-0 right-0 w-80 h-80 bg-[#06b6d4]/5 blur-[100px] rounded-full" />
@@ -68,7 +67,6 @@ export default function Login() {
         transition={{ duration: 0.5 }}
         className="w-full max-w-md"
       >
-        {/* Header */}
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2 mb-8 group">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#0ea5e9] to-[#06b6d4] flex items-center justify-center shadow-[0_0_20px_rgba(14,165,233,0.3)] group-hover:shadow-[0_0_30px_rgba(14,165,233,0.45)] transition-all">
@@ -99,9 +97,7 @@ export default function Login() {
                 placeholder="E-posta"
                 className="w-full bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-xl py-3.5 pl-11 pr-4 text-sm focus:outline-none focus:border-[var(--accent-primary)]/50 focus:ring-1 focus:ring-[var(--accent-primary)]/15 transition-all text-[var(--text-primary)] placeholder:text-[var(--text-muted)]"
               />
-              {errors.email && (
-                <p className="mt-1 text-xs text-red-400">{errors.email.message}</p>
-              )}
+              {errors.email && <p className="mt-1 text-xs text-red-400">{errors.email.message}</p>}
             </div>
 
             <div className="relative">
@@ -113,18 +109,7 @@ export default function Login() {
                 placeholder="Şifre"
                 className="w-full bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-xl py-3.5 pl-11 pr-4 text-sm focus:outline-none focus:border-[var(--accent-primary)]/50 focus:ring-1 focus:ring-[var(--accent-primary)]/15 transition-all text-[var(--text-primary)] placeholder:text-[var(--text-muted)]"
               />
-              {errors.password && (
-                <p className="mt-1 text-xs text-red-400">{errors.password.message}</p>
-              )}
-            </div>
-
-            <div className="flex justify-end">
-              <Link
-                href="/forgot-password"
-                className="text-xs text-[var(--text-muted)] hover:text-[var(--accent-primary)] transition-colors"
-              >
-                Şifremi Unuttum
-              </Link>
+              {errors.password && <p className="mt-1 text-xs text-red-400">{errors.password.message}</p>}
             </div>
 
             <button
