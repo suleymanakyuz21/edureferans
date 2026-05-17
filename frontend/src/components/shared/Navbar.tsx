@@ -3,13 +3,15 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Moon, Sun, Zap } from 'lucide-react';
+import { Menu, X, Moon, Sun, Zap, LayoutDashboard, LogOut } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useAuthStore } from '@/store/useAuthStore';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
+  const { user, logout, isHydrated } = useAuthStore();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -92,18 +94,39 @@ const Navbar = () => {
           >
             {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
           </button>
-          <Link
-            href="/login"
-            className="px-5 py-2 rounded-xl border border-[var(--border-color)] text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--accent-primary)]/30 transition-all"
-          >
-            Giriş Yap
-          </Link>
-          <Link
-            href="/register"
-            className="px-5 py-2 rounded-xl btn-gradient text-sm font-semibold text-white"
-          >
-            Kayıt Ol
-          </Link>
+          {isHydrated && user ? (
+            <>
+              <Link
+                href={user.role === 'ADMIN' ? '/admin' : '/dashboard'}
+                className="flex items-center gap-2 px-5 py-2 rounded-xl border border-[var(--border-color)] text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--accent-primary)]/30 transition-all"
+              >
+                <LayoutDashboard size={15} />
+                Dashboard
+              </Link>
+              <button
+                onClick={() => logout()}
+                className="flex items-center gap-2 px-5 py-2 rounded-xl btn-gradient text-sm font-semibold text-white"
+              >
+                <LogOut size={15} />
+                Çıkış
+              </button>
+            </>
+          ) : (
+            <>
+              <Link
+                href="/login"
+                className="px-5 py-2 rounded-xl border border-[var(--border-color)] text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[var(--accent-primary)]/30 transition-all"
+              >
+                Giriş Yap
+              </Link>
+              <Link
+                href="/register"
+                className="px-5 py-2 rounded-xl btn-gradient text-sm font-semibold text-white"
+              >
+                Kayıt Ol
+              </Link>
+            </>
+          )}
         </div>
 
         {/* Mobile Toggle */}
@@ -151,12 +174,32 @@ const Navbar = () => {
                 )
               )}
               <div className="flex flex-col gap-2 pt-4 border-t border-[var(--border-color)] mt-2">
-                <Link href="/login" className="text-center py-3 rounded-xl border border-[var(--border-color)] text-sm font-medium hover:border-[var(--accent-primary)]/30 transition-all">
-                  Giriş Yap
-                </Link>
-                <Link href="/register" className="text-center py-3 rounded-xl btn-gradient text-white text-sm font-semibold">
-                  Kayıt Ol
-                </Link>
+                {isHydrated && user ? (
+                  <>
+                    <Link
+                      href={user.role === 'ADMIN' ? '/admin' : '/dashboard'}
+                      className="text-center py-3 rounded-xl border border-[var(--border-color)] text-sm font-medium hover:border-[var(--accent-primary)]/30 transition-all"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      Dashboard
+                    </Link>
+                    <button
+                      onClick={() => { logout(); setIsMobileMenuOpen(false); }}
+                      className="text-center py-3 rounded-xl btn-gradient text-white text-sm font-semibold"
+                    >
+                      Çıkış Yap
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <Link href="/login" className="text-center py-3 rounded-xl border border-[var(--border-color)] text-sm font-medium hover:border-[var(--accent-primary)]/30 transition-all" onClick={() => setIsMobileMenuOpen(false)}>
+                      Giriş Yap
+                    </Link>
+                    <Link href="/register" className="text-center py-3 rounded-xl btn-gradient text-white text-sm font-semibold" onClick={() => setIsMobileMenuOpen(false)}>
+                      Kayıt Ol
+                    </Link>
+                  </>
+                )}
               </div>
             </div>
           </motion.div>
