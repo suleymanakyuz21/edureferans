@@ -143,8 +143,7 @@ export async function POST(request: NextRequest) {
       201
     );
   } catch (error) {
-    const msg = error instanceof Error ? error.message : String(error);
-    console.error('Register error:', msg);
-    return errorResponse(`Sunucu hatası: ${msg}`, 500);
+    console.error('Register error:', error);
+    return errorResponse('Sunucu hatası. Lütfen tekrar deneyin.', 500);
   }
 }

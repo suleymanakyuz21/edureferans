@@ -87,8 +87,7 @@ export async function POST(request: NextRequest) {
     response.cookies.set('token', token, COOKIE_OPTIONS);
     return response;
   } catch (error) {
-    const msg = error instanceof Error ? error.message : String(error);
-    console.error('Verify error:', msg);
-    return errorResponse(`Sunucu hatası: ${msg}`, 500);
+    console.error('Verify error:', error);
+    return errorResponse('Sunucu hatası. Lütfen tekrar deneyin.', 500);
   }
 }
