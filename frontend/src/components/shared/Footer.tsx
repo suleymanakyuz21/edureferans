@@ -44,7 +44,7 @@ const Footer = () => {
           <div>
             <h4 className="font-bold mb-5 text-[var(--text-primary)] text-sm uppercase tracking-widest">Destek</h4>
             <ul className="space-y-3 text-[var(--text-secondary)] text-sm">
-              <li><Link href="#faq" className="hover:text-[var(--accent-primary)] transition-colors">Sıkça Sorulan Sorular</Link></li>
+              <li><Link href="/sss" className="hover:text-[var(--accent-primary)] transition-colors">Sıkça Sorulan Sorular</Link></li>
               <li><Link href="#" className="hover:text-[var(--accent-primary)] transition-colors">Kullanım Koşulları</Link></li>
               <li><Link href="#" className="hover:text-[var(--accent-primary)] transition-colors">Gizlilik Politikası</Link></li>
               <li><Link href="#" className="hover:text-[var(--accent-primary)] transition-colors">İletişim</Link></li>

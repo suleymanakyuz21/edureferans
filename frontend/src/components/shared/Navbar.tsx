@@ -36,7 +36,7 @@ const Navbar = () => {
     { name: 'Ana Sayfa', href: '/' },
     { name: 'Kategoriler', href: '#categories' },
     { name: 'Referans Sistemi', href: '#referral' },
-    { name: 'SSS', href: '#footer' },
+    { name: 'SSS', href: '/sss', external: true },
   ];
 
   return (
@@ -65,6 +65,7 @@ const Navbar = () => {
             <li key={link.name}>
               <Link
                 href={link.href}
+                target={link.external ? "_blank" : undefined}
                 className="text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-colors duration-200"
               >
                 {link.name}
@@ -120,6 +121,7 @@ const Navbar = () => {
                 <Link
                   key={link.name}
                   href={link.href}
+                  target={link.external ? "_blank" : undefined}
                   className="text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--accent-primary)] px-3 py-2.5 rounded-xl hover:bg-[var(--accent-primary)]/5 transition-all"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
