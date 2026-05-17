@@ -2,8 +2,11 @@ import { Resend } from 'resend';
 
 export async function sendVerificationEmail(email: string, code: string): Promise<void> {
   const apiKey = process.env.RESEND_API_KEY;
+
+  // Always log OTP so admin can retrieve from Vercel function logs if email fails
+  console.log(`[OTP] ${email} → ${code}`);
+
   if (!apiKey || apiKey.startsWith('REPLACE_')) {
-    console.log(`\n[DEV] VERIFICATION EMAIL TO: ${email} | CODE: ${code} (15 min)\n`);
     return;
   }
 
