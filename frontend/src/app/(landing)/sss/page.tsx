@@ -41,13 +41,10 @@ export default function FAQPage() {
     setOpenIndex(isOpening ? index : null);
 
     if (isOpening) {
-      // Wait for the accordion animation to start so we get accurate bounding client rect
       setTimeout(() => {
         const element = itemRefs.current[index];
         if (element) {
-          const yOffset = -100; // Offset for fixed navbar
-          const y = element.getBoundingClientRect().top + window.scrollY + yOffset;
-          window.scrollTo({ top: y, behavior: 'smooth' });
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
       }, 150);
     }
@@ -98,7 +95,7 @@ export default function FAQPage() {
               <div 
                 key={index}
                 ref={(el) => { itemRefs.current[index] = el; }}
-                className={`bg-[var(--card-bg)] border rounded-2xl overflow-hidden transition-all duration-300 ${isOpen ? 'border-[#0ea5e9]/40 shadow-[0_0_30px_rgba(14,165,233,0.1)]' : 'border-[var(--border-color)] hover:border-[var(--border-color-hover)]'}`}
+                className={`scroll-m-24 bg-[var(--card-bg)] border rounded-2xl overflow-hidden transition-all duration-300 ${isOpen ? 'border-[#0ea5e9]/40 shadow-[0_0_30px_rgba(14,165,233,0.1)]' : 'border-[var(--border-color)] hover:border-[var(--border-color-hover)]'}`}
               >
                 <button
                   className="w-full px-6 py-5 flex items-center justify-between text-left focus:outline-none"
