@@ -1,7 +1,5 @@
 import { Resend } from 'resend';
 
-const FROM = process.env.RESEND_FROM_EMAIL ?? 'noreply@edureferans.com';
-
 export async function sendVerificationEmail(email: string, code: string): Promise<void> {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey || apiKey.startsWith('REPLACE_')) {
@@ -9,12 +7,16 @@ export async function sendVerificationEmail(email: string, code: string): Promis
     return;
   }
 
+  // Without a verified domain, Resend only allows sending from onboarding@resend.dev
+  // Once you verify your domain at resend.com/domains, set RESEND_FROM_EMAIL env var
+  const from = process.env.RESEND_FROM_EMAIL ?? 'onboarding@resend.dev';
+
   const resend = new Resend(apiKey);
 
-  await resend.emails.send({
-    from: FROM,
+  const { error } = await resend.emails.send({
+    from,
     to: email,
-    subject: 'EduReferans — E-posta Doğrulama',
+    subject: 'EduReferans — E-posta Doğrulama Kodu',
     html: `
 <!DOCTYPE html>
 <html>
@@ -39,4 +41,9 @@ export async function sendVerificationEmail(email: string, code: string): Promis
 </body>
 </html>`,
   });
+
+  if (error) {
+    console.error('[EMAIL] Resend error:', JSON.stringify(error));
+    throw new Error(`Email gönderilemedi: ${error.message}`);
+  }
 }

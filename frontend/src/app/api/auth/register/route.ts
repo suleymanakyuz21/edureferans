@@ -90,9 +90,13 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    await sendVerificationEmail(email, otp);
+    try {
+      await sendVerificationEmail(email, otp);
+    } catch (emailError) {
+      // Log but don't fail registration — user can request resend later
+      console.error('[REGISTER] Email send failed:', emailError);
+    }
 
-    // NOTE: Do NOT return the OTP in the response — it defeats email verification
     return successResponse(
       { requiresVerification: true, email },
       'Doğrulama kodu e-postanıza gönderildi.',
