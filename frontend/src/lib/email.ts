@@ -5,6 +5,7 @@ export async function sendVerificationEmail(email: string, code: string): Promis
 
   // Always log OTP so admin can retrieve from Vercel function logs if email fails
   console.log(`[OTP] ${email} → ${code}`);
+  console.log(`[EMAIL] apiKey set: ${!!apiKey}, prefix: ${apiKey?.slice(0, 6) ?? 'none'}`);
 
   if (!apiKey || apiKey.startsWith('REPLACE_')) {
     return;
