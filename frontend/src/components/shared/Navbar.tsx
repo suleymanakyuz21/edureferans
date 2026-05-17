@@ -63,13 +63,23 @@ const Navbar = () => {
         <ul className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
             <li key={link.name}>
-              <Link
-                href={link.href}
-                target={link.external ? "_blank" : undefined}
-                className="text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-colors duration-200"
-              >
-                {link.name}
-              </Link>
+              {link.external ? (
+                <a
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-colors duration-200"
+                >
+                  {link.name}
+                </a>
+              ) : (
+                <Link
+                  href={link.href}
+                  className="text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-colors duration-200"
+                >
+                  {link.name}
+                </Link>
+              )}
             </li>
           ))}
         </ul>
@@ -117,17 +127,29 @@ const Navbar = () => {
             className="md:hidden bg-[var(--bg-secondary)]/95 backdrop-blur-xl border-b border-[var(--border-color)] overflow-hidden"
           >
             <div className="flex flex-col gap-1 p-5">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.name}
-                  href={link.href}
-                  target={link.external ? "_blank" : undefined}
-                  className="text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--accent-primary)] px-3 py-2.5 rounded-xl hover:bg-[var(--accent-primary)]/5 transition-all"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  {link.name}
-                </Link>
-              ))}
+              {navLinks.map((link) => 
+                link.external ? (
+                  <a
+                    key={link.name}
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--accent-primary)] px-3 py-2.5 rounded-xl hover:bg-[var(--accent-primary)]/5 transition-all"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    {link.name}
+                  </a>
+                ) : (
+                  <Link
+                    key={link.name}
+                    href={link.href}
+                    className="text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--accent-primary)] px-3 py-2.5 rounded-xl hover:bg-[var(--accent-primary)]/5 transition-all"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    {link.name}
+                  </Link>
+                )
+              )}
               <div className="flex flex-col gap-2 pt-4 border-t border-[var(--border-color)] mt-2">
                 <Link href="/login" className="text-center py-3 rounded-xl border border-[var(--border-color)] text-sm font-medium hover:border-[var(--accent-primary)]/30 transition-all">
                   Giriş Yap
