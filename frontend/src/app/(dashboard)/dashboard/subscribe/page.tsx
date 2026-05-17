@@ -8,8 +8,8 @@ export default function SubscribePage() {
 
   useEffect(() => {
     const checkoutUrl = user?.email 
-      ? `https://polar.sh/checkout/polar_c_1aPn4oDN6T1ibnZ6ncCtbmsjt4vTJOoiR8Ypg1g7dza?customer_email=${encodeURIComponent(user.email)}`
-      : 'https://polar.sh/checkout/polar_c_1aPn4oDN6T1ibnZ6ncCtbmsjt4vTJOoiR8Ypg1g7dza';
+      ? `https://buy.polar.sh/polar_cl_5LfGZYF5aQcdHxR5chT94MLMyr8K4knZcVHyH0Oc1Wv?customer_email=${encodeURIComponent(user.email)}`
+      : 'https://buy.polar.sh/polar_cl_5LfGZYF5aQcdHxR5chT94MLMyr8K4knZcVHyH0Oc1Wv';
     
     window.location.href = checkoutUrl;
   }, [user]);

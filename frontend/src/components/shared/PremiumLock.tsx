@@ -9,10 +9,9 @@ interface PremiumLockProps {
 
 const PremiumLock: React.FC<PremiumLockProps> = ({ title, description }) => {
   const { user } = useAuthStore();
-  // Append user email to checkout link if available
   const checkoutUrl = user?.email 
-    ? `https://polar.sh/checkout/polar_c_1aPn4oDN6T1ibnZ6ncCtbmsjt4vTJOoiR8Ypg1g7dza?customer_email=${encodeURIComponent(user.email)}`
-    : 'https://polar.sh/checkout/polar_c_1aPn4oDN6T1ibnZ6ncCtbmsjt4vTJOoiR8Ypg1g7dza';
+    ? `https://buy.polar.sh/polar_cl_5LfGZYF5aQcdHxR5chT94MLMyr8K4knZcVHyH0Oc1Wv?customer_email=${encodeURIComponent(user.email)}`
+    : 'https://buy.polar.sh/polar_cl_5LfGZYF5aQcdHxR5chT94MLMyr8K4knZcVHyH0Oc1Wv';
 
   return (
     <div className="flex flex-col items-center justify-center py-20 px-4 text-center bg-[var(--card-bg)] border border-[var(--border-color)] rounded-2xl relative overflow-hidden">
