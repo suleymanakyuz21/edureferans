@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs';
 import { z } from 'zod';
 import { prisma } from '@/lib/prisma';
 import { successResponse, errorResponse } from '@/lib/apiResponse';
+import { sendVerificationEmail } from '@/lib/email';
 
 // Simple in-memory rate limiter: 3 registrations per hour per IP
 const registerAttempts = new Map<string, { count: number; resetAt: number }>();
@@ -89,11 +90,7 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    // Log to console for dev — replace with Resend/email in production
-    console.log(`\n========================================`);
-    console.log(`[DEV] VERIFICATION EMAIL TO: ${email}`);
-    console.log(`[DEV] CODE: ${otp} (expires in 15 minutes)`);
-    console.log(`========================================\n`);
+    await sendVerificationEmail(email, otp);
 
     // NOTE: Do NOT return the OTP in the response — it defeats email verification
     return successResponse(
