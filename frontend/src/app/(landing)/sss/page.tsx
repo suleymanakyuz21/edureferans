@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Minus, Zap, HelpCircle } from 'lucide-react';
 import Link from 'next/link';
@@ -30,6 +30,10 @@ const faqs = [
 
 export default function FAQPage() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div className="min-h-screen pt-24 pb-20 px-6 relative overflow-hidden bg-[var(--bg-primary)]">
