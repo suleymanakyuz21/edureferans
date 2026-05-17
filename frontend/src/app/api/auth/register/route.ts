@@ -65,15 +65,23 @@ export async function POST(request: NextRequest) {
         data: { verificationCode: otp, verificationCodeExpiresAt: otpExpiresAt },
       });
 
+      let emailFailed = false;
       try {
         await sendVerificationEmail(email, otp);
       } catch (emailError) {
         console.error('[REGISTER] Email resend failed:', emailError);
+        emailFailed = true;
       }
 
       return successResponse(
-        { requiresVerification: true, email },
-        'Yeni doğrulama kodu e-postanıza gönderildi.',
+        {
+          requiresVerification: true,
+          email,
+          ...(emailFailed && { debugCode: otp }),
+        },
+        emailFailed
+          ? 'E-posta gönderilemedi. Kod aşağıda gösterildi.'
+          : 'Yeni doğrulama kodu e-postanıza gönderildi.',
         200
       );
     }
@@ -114,16 +122,24 @@ export async function POST(request: NextRequest) {
       },
     });
 
+    let emailFailed = false;
     try {
       await sendVerificationEmail(email, otp);
     } catch (emailError) {
-      // Log but don't fail registration — user can request resend later
       console.error('[REGISTER] Email send failed:', emailError);
+      emailFailed = true;
     }
 
     return successResponse(
-      { requiresVerification: true, email },
-      'Doğrulama kodu e-postanıza gönderildi.',
+      {
+        requiresVerification: true,
+        email,
+        // Temporary: show OTP in response when email delivery fails
+        ...(emailFailed && { debugCode: otp }),
+      },
+      emailFailed
+        ? 'E-posta gönderilemedi. Kod aşağıda gösterildi.'
+        : 'Doğrulama kodu e-postanıza gönderildi.',
       201
     );
   } catch (error) {

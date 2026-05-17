@@ -26,6 +26,7 @@ export default function Register() {
   const [step, setStep] = useState<'form' | 'verify'>('form');
   const [tempEmail, setTempEmail] = useState('');
   const [verifyCode, setVerifyCode] = useState('');
+  const [debugCode, setDebugCode] = useState<string | null>(null);
   const router = useRouter();
   const { setAuth } = useAuthStore();
 
@@ -41,8 +42,12 @@ export default function Register() {
     setIsLoading(true);
     setError(null);
     try {
-      await api.post('/auth/register', data);
+      const res = await api.post('/auth/register', data);
       setTempEmail(data.email);
+      if (res.data?.data?.debugCode) {
+        setDebugCode(res.data.data.debugCode);
+        setVerifyCode(res.data.data.debugCode);
+      }
       setStep('verify');
     } catch (err: unknown) {
       const e = err as { response?: { data?: { message?: string } } };
@@ -173,10 +178,17 @@ export default function Register() {
                 <MailIcon size={28} className="text-[var(--accent-primary)]" />
               </div>
               <h2 className="text-2xl font-black mb-3 text-[var(--text-primary)]">E-postanı Doğrula</h2>
-              <p className="text-[var(--text-secondary)] text-sm mb-6">
-                <span className="font-semibold text-[var(--text-primary)]">{tempEmail}</span> adresine{' '}
-                6 haneli bir doğrulama kodu gönderdik.
-              </p>
+              {debugCode ? (
+                <div className="mb-4 p-3 bg-yellow-500/10 border border-yellow-500/30 rounded-xl text-left">
+                  <p className="text-yellow-400 text-xs font-bold mb-1">⚠ E-posta servisi geçici olarak devre dışı</p>
+                  <p className="text-yellow-300/80 text-xs">Kodun otomatik girildi, doğrula butonuna bas.</p>
+                </div>
+              ) : (
+                <p className="text-[var(--text-secondary)] text-sm mb-6">
+                  <span className="font-semibold text-[var(--text-primary)]">{tempEmail}</span> adresine{' '}
+                  6 haneli bir doğrulama kodu gönderdik.
+                </p>
+              )}
 
               {error && (
                 <div className="mb-5 p-3.5 bg-red-500/8 border border-red-500/20 text-red-400 text-sm rounded-xl">
