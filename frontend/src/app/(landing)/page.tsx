@@ -322,7 +322,7 @@ export default function Home() {
                       </div>
                     ))}
                   </div>
-                  <p className="text-slate-500 text-xs mt-2">Doğrudan davet ettiğin kişiler her alışverişte sana <span className="text-cyan-400 font-bold">%20</span> komisyon kazandırır.</p>
+                  <p className="text-slate-500 text-xs mt-2">Doğrudan davet ettiğin kişiler pro üye olursa <span className="text-cyan-400 font-bold">%20</span> komisyon kazanırsın.</p>
                 </div>
 
                 {/* Arrow */}
@@ -353,7 +353,7 @@ export default function Home() {
                       </div>
                     ))}
                   </div>
-                  <p className="text-slate-500 text-xs mt-2">1. seviyenin davet ettikleri de sana <span className="text-violet-400 font-bold">%10</span> komisyon kazandırır. Sen hiç çabalamadan!</p>
+                  <p className="text-slate-500 text-xs mt-2">1. seviyenin davet ettikleri pro üye olursa <span className="text-violet-400 font-bold">%10</span> komisyon kazanırsın. Sen hiç çabalamadan!</p>
                 </div>
 
                 {/* Total */}
