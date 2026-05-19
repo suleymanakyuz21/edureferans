@@ -139,8 +139,8 @@ export default function DashboardPage() {
               </h2>
               <p className="text-slate-400 text-sm mb-5">Premium üyelik şimdi çok avantajlı.</p>
               <div className="flex items-baseline gap-3 mb-6">
-                <span className="text-4xl font-black text-white">999 <span className="text-lg font-semibold text-slate-300">TL</span></span>
-                <span className="text-xl text-slate-500 line-through font-medium">2.499 TL</span>
+                <span className="text-4xl font-black text-white">2.499 <span className="text-lg font-semibold text-slate-300">TL</span></span>
+                <span className="text-xl text-slate-500 line-through font-medium">6.249 TL</span>
               </div>
               <Link href="/dashboard/subscribe"
                 className="inline-flex items-center gap-2 px-7 py-3.5 rounded-2xl text-sm font-bold text-white shadow-[0_0_24px_rgba(139,92,246,0.5)] hover:shadow-[0_0_36px_rgba(139,92,246,0.7)] transition-all group"
@@ -276,7 +276,7 @@ export default function DashboardPage() {
       {/* ── PLANS ── */}
       <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }}>
         <div className="flex items-center justify-between mb-5">
-          <h3 className="font-black text-white text-lg">Plans for you or your team</h3>
+          <h3 className="font-black text-white text-lg">Sana Özel Planlar</h3>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           {/* FREE */}
@@ -310,10 +310,10 @@ export default function DashboardPage() {
                 <span className="px-2.5 py-1 bg-violet-500/20 border border-violet-500/30 text-violet-300 text-[10px] font-black rounded-full tracking-wider">EN POPÜLER</span>
               </div>
               <div className="flex items-baseline gap-2 mb-1">
-                <p className="text-4xl font-black text-white">₺999</p>
+                <p className="text-4xl font-black text-white">₺2.499</p>
                 <p className="text-base font-medium text-slate-400">/ yıl</p>
               </div>
-              <p className="text-slate-500 text-sm line-through mb-5">2.499 TL</p>
+              <p className="text-slate-500 text-sm line-through mb-5">6.249 TL</p>
               <ul className="space-y-3 mb-7">
                 {proFeatures.map((f, i) => (
                   <li key={i} className="flex items-center gap-2.5 text-sm text-slate-300">
@@ -326,7 +326,7 @@ export default function DashboardPage() {
                 className="w-full py-3 rounded-xl text-white font-bold text-sm flex items-center justify-center gap-2 shadow-[0_0_24px_rgba(139,92,246,0.4)] hover:shadow-[0_0_36px_rgba(139,92,246,0.6)] transition-all group"
                 style={{ background: 'linear-gradient(135deg,#7c3aed,#4f46e5,#2563eb)' }}>
                 <Zap size={14} fill="white" />
-                Pro Üye Ol — ₺999
+                Pro Üye Ol — ₺2.499
                 <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>

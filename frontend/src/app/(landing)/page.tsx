@@ -159,8 +159,8 @@ export default function Home() {
                   <h2 className="text-3xl font-black text-white mb-1">%60 İndirim Fırsatı</h2>
                   <p className="text-slate-400 text-sm mb-6">Premium üyelik şimdi çok avantajlı.</p>
                   <div className="flex items-baseline gap-3 mb-7">
-                    <span className="text-5xl font-black text-white">999 <span className="text-xl font-medium text-slate-300">TL</span></span>
-                    <span className="text-2xl text-slate-500 line-through font-medium">2.499 TL</span>
+                    <span className="text-5xl font-black text-white">2.499 <span className="text-xl font-medium text-slate-300">TL</span></span>
+                    <span className="text-2xl text-slate-500 line-through font-medium">6.249 TL</span>
                   </div>
 
                   {/* Countdown */}
@@ -279,26 +279,88 @@ export default function Home() {
                 </Link>
               </div>
 
-              {/* Network viz */}
-              <div className="relative h-[340px] flex items-center justify-center">
-                <div className="w-28 h-28 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-full flex items-center justify-center text-white font-black text-lg z-20 shadow-[0_0_40px_rgba(6,182,212,0.5)]">
-                  SEN
-                </div>
-                {[
-                  { style: 'top-10 right-16', size: 'w-20 h-20', label: 'Ref 1', glow: 'rgba(6,182,212,0.3)' },
-                  { style: 'bottom-10 right-24', size: 'w-16 h-16', label: 'Ref 2', glow: 'rgba(139,92,246,0.3)' },
-                  { style: 'top-1/2 -translate-y-1/2 right-4', size: 'w-14 h-14', label: 'Ref 3', glow: 'rgba(6,182,212,0.2)' },
-                ].map(({ style, size, label, glow }, i) => (
-                  <div key={i} className={cn('absolute bg-white/5 backdrop-blur-md rounded-full border border-white/10 flex items-center justify-center text-white/80 text-xs font-bold z-10', size, style)}
-                    style={{ boxShadow: `0 0 20px ${glow}` }}>
-                    {label}
+              {/* 2-Level Referral Diagram */}
+              <div className="space-y-3">
+                {/* SEN */}
+                <div className="flex justify-center">
+                  <div className="flex items-center gap-3 px-6 py-4 rounded-2xl bg-gradient-to-r from-cyan-500/20 to-blue-600/20 border border-cyan-500/40 shadow-[0_0_24px_rgba(6,182,212,0.2)]">
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center font-black text-white text-sm shadow-[0_0_16px_rgba(6,182,212,0.5)]">
+                      SEN
+                    </div>
+                    <div>
+                      <p className="text-white font-black text-sm">Sen (Üye)</p>
+                      <p className="text-cyan-400 text-xs font-semibold">Referans kodunu paylaşıyorsun</p>
+                    </div>
                   </div>
-                ))}
-                <svg className="absolute inset-0 w-full h-full -z-0">
-                  <line x1="50%" y1="50%" x2="76%" y2="20%" stroke="#06b6d4" strokeWidth="1.5" strokeDasharray="4,6" opacity="0.4" />
-                  <line x1="50%" y1="50%" x2="74%" y2="80%" stroke="#7c3aed" strokeWidth="1.5" strokeDasharray="4,6" opacity="0.35" />
-                  <line x1="50%" y1="50%" x2="93%" y2="50%" stroke="#06b6d4" strokeWidth="1.5" strokeDasharray="4,6" opacity="0.3" />
-                </svg>
+                </div>
+
+                {/* Arrow */}
+                <div className="flex justify-center">
+                  <div className="flex flex-col items-center gap-1">
+                    <div className="w-px h-4 bg-gradient-to-b from-cyan-500/60 to-cyan-500/20" />
+                    <p className="text-[10px] text-cyan-400 font-bold bg-cyan-500/10 border border-cyan-500/20 rounded-full px-2 py-0.5">Davet ediyorsun</p>
+                    <div className="w-px h-4 bg-gradient-to-b from-cyan-500/20 to-transparent" />
+                  </div>
+                </div>
+
+                {/* 1. Seviye */}
+                <div className="rounded-2xl border border-cyan-500/30 bg-cyan-500/5 p-4">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-2">
+                      <div className="w-6 h-6 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center text-[10px] font-black text-white">1</div>
+                      <p className="text-white font-black text-sm">1. Seviye Referansların</p>
+                    </div>
+                    <span className="px-3 py-1 bg-cyan-500/20 border border-cyan-500/30 text-cyan-300 text-xs font-black rounded-full">%20 KOMİSYON</span>
+                  </div>
+                  <div className="flex gap-2">
+                    {['Ali', 'Ayşe', 'Mehmet', '+daha fazla'].map((n, i) => (
+                      <div key={i} className="flex-1 py-2 px-2 bg-slate-800/60 rounded-xl border border-slate-700/40 text-center">
+                        <div className="w-7 h-7 rounded-full bg-cyan-500/20 border border-cyan-500/30 flex items-center justify-center mx-auto mb-1">
+                          <Users size={12} className="text-cyan-400" />
+                        </div>
+                        <p className="text-[10px] text-slate-400 font-medium">{n}</p>
+                      </div>
+                    ))}
+                  </div>
+                  <p className="text-slate-500 text-xs mt-2">Doğrudan davet ettiğin kişiler her alışverişte sana <span className="text-cyan-400 font-bold">%20</span> komisyon kazandırır.</p>
+                </div>
+
+                {/* Arrow */}
+                <div className="flex justify-center">
+                  <div className="flex flex-col items-center gap-1">
+                    <div className="w-px h-4 bg-gradient-to-b from-violet-500/60 to-violet-500/20" />
+                    <p className="text-[10px] text-violet-400 font-bold bg-violet-500/10 border border-violet-500/20 rounded-full px-2 py-0.5">Onlar da davet ediyor</p>
+                    <div className="w-px h-4 bg-gradient-to-b from-violet-500/20 to-transparent" />
+                  </div>
+                </div>
+
+                {/* 2. Seviye */}
+                <div className="rounded-2xl border border-violet-500/30 bg-violet-500/5 p-4">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-2">
+                      <div className="w-6 h-6 rounded-full bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center text-[10px] font-black text-white">2</div>
+                      <p className="text-white font-black text-sm">2. Seviye Referansların</p>
+                    </div>
+                    <span className="px-3 py-1 bg-violet-500/20 border border-violet-500/30 text-violet-300 text-xs font-black rounded-full">%10 KOMİSYON</span>
+                  </div>
+                  <div className="flex gap-2">
+                    {['Zeynep', 'Can', 'Selin', '+daha fazla'].map((n, i) => (
+                      <div key={i} className="flex-1 py-2 px-2 bg-slate-800/60 rounded-xl border border-slate-700/40 text-center">
+                        <div className="w-7 h-7 rounded-full bg-violet-500/20 border border-violet-500/30 flex items-center justify-center mx-auto mb-1">
+                          <Users size={12} className="text-violet-400" />
+                        </div>
+                        <p className="text-[10px] text-slate-400 font-medium">{n}</p>
+                      </div>
+                    ))}
+                  </div>
+                  <p className="text-slate-500 text-xs mt-2">1. seviyenin davet ettikleri de sana <span className="text-violet-400 font-bold">%10</span> komisyon kazandırır. Sen hiç çabalamadan!</p>
+                </div>
+
+                {/* Total */}
+                <div className="flex items-center gap-3 p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
+                  <TrendingUp size={16} className="text-emerald-400 shrink-0" />
+                  <p className="text-emerald-300 text-xs font-semibold">Ağın büyüdükçe kazancın katlanır — sınır yok!</p>
+                </div>
               </div>
             </div>
           </div>
@@ -310,7 +372,7 @@ export default function Home() {
         <div className="container mx-auto">
           <div className="text-center mb-16">
             <span className="text-xs uppercase tracking-widest font-bold text-violet-400 mb-3 block">Fiyatlandırma</span>
-            <h2 className="text-4xl md:text-5xl font-black text-white mb-4">Plans for you or your team</h2>
+            <h2 className="text-4xl md:text-5xl font-black text-white mb-4">Sana Özel Planlar</h2>
             <p className="text-slate-400 max-w-xl mx-auto">Hedeflerinize en uygun planı seçin ve hemen başlayın.</p>
           </div>
 
@@ -347,10 +409,10 @@ export default function Home() {
                   <span className="px-3 py-1 bg-violet-500/20 border border-violet-500/30 text-violet-300 text-[10px] font-black rounded-full tracking-wider">EN POPÜLER</span>
                 </div>
                 <div className="flex items-baseline gap-3 mb-1">
-                  <p className="text-5xl font-black text-white">₺999</p>
+                  <p className="text-5xl font-black text-white">₺2.499</p>
                   <p className="text-lg font-medium text-slate-400">/ yıl</p>
                 </div>
-                <p className="text-slate-500 text-sm line-through mb-7">2.499 TL</p>
+                <p className="text-slate-500 text-sm line-through mb-7">6.249 TL</p>
                 <ul className="space-y-3.5 mb-8">
                   {proPlan.map((f, i) => (
                     <li key={i} className="flex items-center gap-3 text-sm text-slate-200">
@@ -364,7 +426,7 @@ export default function Home() {
                 <Link href="/register"
                   className="block w-full py-4 rounded-2xl text-white font-bold text-sm text-center shadow-[0_0_24px_rgba(139,92,246,0.4)] hover:shadow-[0_0_40px_rgba(139,92,246,0.6)] transition-all"
                   style={{ background: 'linear-gradient(135deg,#7c3aed,#4f46e5,#2563eb)' }}>
-                  Pro Üye Ol — ₺999
+                  Pro Üye Ol — ₺2.499
                 </Link>
               </div>
             </div>
