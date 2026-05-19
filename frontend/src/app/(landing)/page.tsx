@@ -5,8 +5,24 @@ import { motion } from 'framer-motion';
 import {
   ArrowRight, Zap, Users, BookOpen, TrendingUp, Award,
   Star, ShieldCheck, Code, BarChart, Heart, Globe,
-  Check, Crown, Instagram, Twitter,
+  Check, Crown,
 } from 'lucide-react';
+
+const InstagramIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6 text-white">
+    <rect x="2" y="2" width="20" height="20" rx="5" ry="5" /><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" /><line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+  </svg>
+);
+const XIcon = () => (
+  <svg viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6 text-white">
+    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+  </svg>
+);
+const TikTokIcon = () => (
+  <svg viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6 text-white">
+    <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.2 8.2 0 0 0 4.79 1.52V6.74a4.85 4.85 0 0 1-1.02-.05z" />
+  </svg>
+);
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 
@@ -60,9 +76,9 @@ export default function Home() {
   ];
 
   const socials = [
-    { name: 'Instagram', handle: '@edureferans', icon: Instagram, color: 'from-pink-500 to-rose-600', bg: 'bg-pink-500/10', border: 'border-pink-500/20', href: 'https://instagram.com/edureferans' },
-    { name: 'TikTok', handle: '@edureferans', icon: Globe, color: 'from-slate-200 to-white', bg: 'bg-white/5', border: 'border-white/10', href: 'https://tiktok.com/@edureferans' },
-    { name: 'X (Twitter)', handle: '@edureferans', icon: Twitter, color: 'from-sky-400 to-blue-500', bg: 'bg-sky-500/10', border: 'border-sky-500/20', href: 'https://twitter.com/edureferans' },
+    { name: 'Instagram', handle: '@edureferans', Icon: InstagramIcon, color: 'from-pink-500 to-rose-600', bg: 'bg-pink-500/10', border: 'border-pink-500/20', href: 'https://instagram.com/edureferans' },
+    { name: 'TikTok', handle: '@edureferans', Icon: TikTokIcon, color: 'from-slate-200 to-white', bg: 'bg-white/5', border: 'border-white/10', href: 'https://tiktok.com/@edureferans' },
+    { name: 'X (Twitter)', handle: '@edureferans', Icon: XIcon, color: 'from-sky-400 to-blue-500', bg: 'bg-sky-500/10', border: 'border-sky-500/20', href: 'https://twitter.com/edureferans' },
   ];
 
   const footerLinks = {
@@ -394,7 +410,7 @@ export default function Home() {
                 whileHover={{ y: -4 }}
                 className={cn('p-6 rounded-2xl border transition-all cursor-pointer group flex flex-col items-center text-center gap-4', s.bg, s.border)}>
                 <div className={cn('w-14 h-14 rounded-2xl bg-gradient-to-br flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform', s.color)}>
-                  <s.icon size={24} className="text-white" />
+                  <s.Icon />
                 </div>
                 <div>
                   <p className="font-black text-white text-base">{s.name}</p>
